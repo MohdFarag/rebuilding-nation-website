@@ -1,0 +1,104 @@
+html {
+    scroll-padding-top: 3.5rem;
+    background-color: #212529;
+}
+
+.text-justify{
+    text-align: justify;
+}
+
+/* Fonts */
+.reemKufi {
+    font-family: 'Reem Kufi Fun', serif;
+}
+
+.CairoPlay{
+    font-family: 'Cairo Play', serif;
+}
+
+.Changa{
+    font-family: 'Changa', serif;
+}
+
+/* Nav */
+#mainNav{
+    background: rgb(80,29,0);
+    background: -moz-linear-gradient(0deg, rgba(80,29,0,1) 0%, rgba(213,130,0,0.7749474789915967) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(80,29,0,1) 0%, rgba(213,130,0,0.7749474789915967) 100%);
+    background: linear-gradient(0deg, rgba(80,29,0,1) 0%, rgba(213,130,0,0.7749474789915967) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#501d00",endColorstr="#d58200",GradientType=1);
+}
+
+.nav-link{
+    color: rgb(255, 255, 255) !important;
+}
+
+.navbar-brand:hover{
+    color: #dddddd;
+}
+
+/* Header */
+header{
+    padding-top: 10rem;
+    padding-bottom: 6rem;
+    background: url(../assets/cover5.jpg) !important;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    opacity: 1.0;
+}
+
+section {
+    padding-top: 5rem;
+    padding-bottom: 8rem;
+}
+
+header:hover {
+    opacity: 0.8;
+}
+
+.BigMessage{
+    text-shadow: 2px 2px 0px #000000;
+    color: #e0dfdc !important;
+}
+
+.BigMessage:hover{
+    text-shadow: 2px 2px 0px #e0dfdc;
+    color: #000000 !important;
+}
+
+/* Card */ 
+
+.card-title:hover{
+    opacity: 0.9;
+}
+
+
+.card img {
+    height: 400px !important;
+}
+
+.card img:hover {
+    opacity: 0.8;
+}
+
+
+.auth-form-light{
+    border-radius: 16px;
+    margin-top: 100px;
+    margin-bottom: 80px;
+    background: #a1630842;
+    border: 2px solid #521f00;
+}
+
+.auth-form-light input[type='text'] {
+    margin-bottom: 20px;
+}
+
+/* PDF */
+.pdfobject-container { height: 50rem; border: 1rem solid rgba(0,0,0,.1); }
+
+
+.mr-4{
+    margin-right: 10px;
+}

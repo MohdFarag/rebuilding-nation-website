@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block main %}
+
+
+<section class="bg-light pb-5 mt-5" id="books">
+    <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+            <div class="col-lg-12">
+                <center>
+                    <img height="500px" src="{{ url_for('static', filename='assets/404.svg') }}" />
+                    <p class="lead">لم يتم العثور على عنوان URL المطلوب على هذا الخادم.</p>
+                    <a class="text-arrow-icon" href="./">
+                        العودة للصفحة الرئيسية
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left ms-0 me-1"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    </a>
+                </center>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

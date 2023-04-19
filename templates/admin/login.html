@@ -1,0 +1,31 @@
+{% extends 'admin/base.html' %}
+{% block main %}
+
+<div class="row w-100 mx-0">
+    <div class="col-lg-4 mx-auto">
+      <div class="auth-form-light text-left py-5 px-4 px-sm-5 CairoPlay">
+        <h4>السلام عليكم !</h4>
+        <h6 class="fw-light">تسجيل الدخول</h6>
+        <div {% if status == True %} hidden {% endif %} class="alert alert-danger" role="alert">
+          إسم المستخدم أو كلمة السر خطأ
+        </div>
+        <form action="{{ url_for('login') }}" method="POST" class="pt-3">
+          <div class="form-group">
+            <input type="text" name="username" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="إسم المستخدم">
+          </div>
+          <div class="form-group">
+            <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="كلمة المرور">
+          </div>
+          <center>
+            <div class="mt-3">
+                <input type="submit" class="btn btn-block btn-dark btn-lg font-weight-medium auth-form-btn" value="تسجيل الدخول">
+            </div>
+          </center>
+          <div class="mb-2">
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

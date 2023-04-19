@@ -1,0 +1,31 @@
+{% extends 'admin/base.html' %}
+{% block main %}
+
+
+<!-- Articles section-->
+<section>
+    <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+            <div class="col-md-4">                
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-action {%if title=='لوحة التحكم' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="/admin">الإعدادات</a></li> <!-- aria-current="true" -->
+                    <li class="list-group-item list-group-item-action {%if title=='قائمة الكتب' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="/admin/books">الكتب</a></li>
+                    <li class="list-group-item list-group-item-action {%if title=='قائمة المقالات' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="/admin/articles">المقالات</a></li>
+                </ul>
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-7">
+                <div class="row">
+                    {% block control %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<navbar></navbar>
+
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block main %}
+
+<!-- Header-->
+<header>
+    <div class="container px-4 text-center">
+        <h1 class="reemKufi BigMessage fw-bolder">
+            {{coverTitle}}
+        </h1>
+        <p class="CairoPlay lead text-white"></p>
+    </div>
+</header>
+
+<!-- Books section-->
+<section class="bg-light" id="books">
+    <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+            <div class="col-lg-12">
+                <h2 class="CairoPlay mb-4">أهم الكتب</h2>
+                <div class="row row-cols-md-4 g-4">
+                    {% if books|length == 0 %}
+                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                        <div class="card CairoPlay">
+                            <div class="card-body">
+                                <center> لا يوجد كتب </center>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% for book in books %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mt-3">
+                        <div class="card CairoPlay">
+                            <img src="{{book[3]}}" class="card-img-top h-25" alt="العنوان">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bolder reemKufi h3">{{book[1]}}</h5>
+                                <p class="card-text">
+                                {{book[2]}}
+                                </p>
+                                <center>
+                                    <a href="{{ book[4] }}" class="text-center card-link">تحميل</a>
+                                    <a href="/book?id={{book[0]}}" class="text-center card-link">معاينة</a>
+                                </center>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">تم النشر {{book[5]}}</small>
+                            </div>
+                        </div>
+                    </div>                       
+                    {% endfor %}            
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Articles section-->
+<section id="articles">
+    <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+            <div class="col-lg-12">
+                <h2 class="CairoPlay mb-4">أهم المقالات</h2>
+                <div class="row row-cols-md-4 g-4">
+                    {% if articles|length == 0 %}
+                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                        <div class="card CairoPlay">
+                            <div class="card-body">
+                                <center>لا توجد مقالات </center>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% for article in articles %}
+                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                        <div class="card CairoPlay">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bolder reemKufi h3">{{article[1]}}</h5>
+                                <p class="card-text">
+                                    {{article[2]}}
+                                    <a href="/article?id={{article[0]}}" class="text-center card-link">المزيد</a>
+                                </p> 
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">تم النشر {{article[3]}}</small>
+                            </div>
+                        </div>
+                    </div>         
+                    {% endfor %}                        
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact section-->
+<section class="bg-light" id="contact">
+    <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+            <div class="col-lg-12">
+                <h2 class="CairoPlay mb-4">للتواصل</h2>
+                <form method="post" action="" class="CairoPlay">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="name" placeholder="أحمد عبدالله فرج">
+                        <label for="name">الإسم</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="onWhat">
+                            <option value="" selected>إختر</option>
+                            <option value="عام">عام</option>
+                            <optgroup label="كتب">
+                                {% for book in books %}
+                                <option value="{{book[1]}}">{{book[1]}}</option>
+                                {% endfor %}
+                            </optgroup>
+                            <optgroup label="مقالات">
+                                {% for article in articles %}
+                                <option value="{{article[1]}}">{{article[1]}}</option>
+                                {% endfor %}
+                            </optgroup>
+                            
+                        </select>
+                        <label for="onWhat">على ماذا ؟</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="اترك رسالتك هنا" id="Comment" style="height: 100px"></textarea>
+                        <label for="Comment">تعليقك</label>
+                    </div>
+                    <input class="btn btn-danger" type="submit" value="أرسل">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

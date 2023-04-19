@@ -1,0 +1,28 @@
+{% extends 'admin/baseControl.html' %}
+{% block control %}
+
+<form action="" method="post" class="CairoPlay">
+    <div class="form-floating">
+        <input type="text" class="form-control mb-3" id="name" name="name" placeholder="إسم الموقع" value="{{name}}">
+        <label for="name">إسم الموقع</label>
+    </div>
+
+    <div class="form-floating">
+        <input type="text" class="form-control mb-3" id="title" name="title" placeholder="عنوان الغلاف" value="{{settings[2]}}">
+        <label for="title">عنوان الغلاف</label>
+    </div>
+
+    <div class="form-floating">
+        <input type="text" class="form-control mb-3" id="username" name="username" placeholder="إسم المستخدم" value="{{settings[3]}}">
+        <label for="username">إسم المستخدم</label>
+    </div>
+
+    <div class="form-floating">
+        <input type="password" class="form-control mb-3" id="password" name="password" placeholder="كلمة المرور" value="{{settings[4]}}">
+        <label for="password">كلمة المرور</label>
+    </div>
+
+    <input class="btn btn-dark float-end" type="submit" value="حفظ">
+</form>
+
+{% endblock %}
