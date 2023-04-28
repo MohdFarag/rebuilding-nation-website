@@ -5,11 +5,12 @@ import os
 
 from flask import Flask
 
-from flaskr.log import site_logger
+from log import site_logger
 
-from . import db
-from . import auth
-from . import site
+import db
+from auth import bp_auth
+from website import bp_site
+from admin import bp_admin
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
@@ -52,11 +53,14 @@ def create_app(test_config=None):
     # Initialize the db File
     db.init_app(app)
 
-    app.register_blueprint(auth.bp)
-    app.register_blueprint(site.bp)
+    app.register_blueprint(bp_auth)
+    app.register_blueprint(bp_admin)
+    app.register_blueprint(bp_site)
+
     app.add_url_rule('/', endpoint='index')
 
     return app
 
-
-
+if __name__ == "__main__":
+    app = create_app()
+    app.run()

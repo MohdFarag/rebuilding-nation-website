@@ -5,19 +5,20 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import mysql_connector, retrieve_tables
-from flaskr.log import site_logger
+from db import mysql_connector, retrieve_tables
+from log import site_logger
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 # Login in Admin Page
-@bp.route("/login", methods=['GET', 'POST'])
+@bp_auth.route("/login", methods=['GET', 'POST'])
 def login():
     _ , myCursor = mysql_connector()
 
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
+    user = None
     if request.method == 'POST':
         username  = request.form['username']
         password  = request.form['password']
@@ -36,7 +37,7 @@ def login():
         session['username'] = user[1]
         
         # Redirect to home page
-        return redirect(url_for('admin'))
+        return redirect(url_for('admin.home'))
     else:
         # Account doesn't exist or username/password incorrect
         flash("We didn't recognize the username / password you entered.", "error")
@@ -45,8 +46,8 @@ def login():
                     name=settings[0][1],
                     title="تسجيل الدخول")
 
-# Page 404
-@bp.before_app_request
+# Load the logged in user details
+@bp_auth.before_app_request
 def load_logged_in_user():
     admin_id = session.get('id')
 
@@ -56,9 +57,9 @@ def load_logged_in_user():
         _,myCursor = mysql_connector()
         myCursor.execute('SELECT * FROM settings WHERE id = %s', (admin_id,))
         g.user = myCursor.fetchone()
-        
+
 # Logout
-@bp.route("/logout")
+@bp_auth.route("/logout")
 def logout():
   # Remove session data, this will log the user out
   username = session['username']
