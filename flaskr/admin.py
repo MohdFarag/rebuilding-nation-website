@@ -16,23 +16,23 @@ from werkzeug.exceptions import HTTPException
 import pandas as pd
 import math
 
-from flaskr.log import site_logger
-from flaskr.config import Config
+from log import site_logger
+from config import Config
 
 #--------------------------------------------------------------------------#
 
-bp = Blueprint('admin', __name__, url_prefix='/admin')
+bp_admin = Blueprint('admin', __name__, url_prefix='/admin')
 UPLOAD_FOLDER = Config.UPLOAD_FOLDER
 
 #--------------------------------------------------------------------------#
 
 # Home
-@bp.route("/")
+@bp_admin.route("/")
 def home():
   return redirect(url_for('admin.admin'))
 
 # Admin | Admin Page
-@bp.route("/admin", methods=['GET', 'POST'])
+@bp_admin.route("/admin", methods=['GET', 'POST'])
 @login_required
 def admin():
     mydb, myCursor = mysql_connector()
@@ -59,7 +59,7 @@ def admin():
                   settings=settings[0])
 
 # Admin | List of Books Page
-@bp.route("/books")
+@bp_admin.route("/books")
 @login_required
 def adminBooks():
     mydb, myCursor = mysql_connector()
@@ -77,7 +77,7 @@ def adminBooks():
                   books=books)
 
 # Admin | Add Book Page
-@bp.route("/addBook", methods=['GET', 'POST'])
+@bp_admin.route("/addBook", methods=['GET', 'POST'])
 @login_required
 def addBook():     
     mydb, myCursor = mysql_connector()
@@ -109,7 +109,7 @@ def addBook():
                     status=status)
 
 # Admin | Remove Book Page
-@bp.route("/RemoveBook", methods=['GET', 'POST'])
+@bp_admin.route("/RemoveBook", methods=['GET', 'POST'])
 @login_required
 def removeBook():
     id = argsGet("id")
@@ -119,7 +119,7 @@ def removeBook():
     return redirect(url_for('adminBooks'))
 
 # Admin | Edit Book Page
-@bp.route("/EditBook", methods=['GET', 'POST'])
+@bp_admin.route("/EditBook", methods=['GET', 'POST'])
 @login_required
 def editBook():
     mydb, myCursor = mysql_connector()
@@ -151,7 +151,7 @@ def editBook():
                 book=book)
 
 # Admin | List of Articles Page
-@bp.route("/articles")
+@bp_admin.route("/articles")
 @login_required
 def adminArticles():
     mydb, myCursor = mysql_connector()
@@ -169,7 +169,7 @@ def adminArticles():
                 articles=articles)
 
 # Admin | Add Book Page
-@bp.route("/addArticle", methods=['GET', 'POST'])
+@bp_admin.route("/addArticle", methods=['GET', 'POST'])
 @login_required
 def addArticle():     
     mydb, myCursor = mysql_connector()
@@ -197,7 +197,7 @@ def addArticle():
                   status=status)
 
 # Admin | Remove Book Page
-@bp.route("/RemoveArticle", methods=['GET', 'POST'])
+@bp_admin.route("/RemoveArticle", methods=['GET', 'POST'])
 @login_required
 def removeArticle():
     id = argsGet("id")
@@ -207,7 +207,7 @@ def removeArticle():
     return redirect(url_for('adminArticles'))
 
 # Admin | Edit Book Page
-@bp.route("/EditArticle", methods=['GET', 'POST'])
+@bp_admin.route("/EditArticle", methods=['GET', 'POST'])
 @login_required
 def editArticle():
     mydb, myCursor = mysql_connector()

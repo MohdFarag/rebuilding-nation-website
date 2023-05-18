@@ -5,7 +5,7 @@ import os
 
 from flask import Flask
 
-from flaskr.log import site_logger
+from log import site_logger
 
 from . import db
 from . import auth
@@ -18,7 +18,6 @@ from werkzeug.utils import import_string
 
 #--------------------------------------------------------------------------#
 
-"""Our app"""
 # __ init __
 def create_app(test_config=None):
     # create and configure the app
@@ -53,13 +52,20 @@ def create_app(test_config=None):
     # Initialize the db File
     db.init_app(app)
 
+<<<<<<< HEAD
     app.register_blueprint(auth.bp)
     app.register_blueprint(site.bp)
     app.register_blueprint(admin.bp)
+=======
+    app.register_blueprint(bp_auth)
+    app.register_blueprint(bp_admin)
+    app.register_blueprint(bp_site)
+>>>>>>> 09e85016ee0ec37fa5d3c0acdc2b6d9f7f1461bf
 
     app.add_url_rule('/', endpoint='index')
 
     return app
 
-
-
+if __name__ == "__main__":
+    app = create_app()
+    app.run()

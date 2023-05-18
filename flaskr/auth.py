@@ -5,13 +5,13 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import mysql_connector, retrieve_tables
-from flaskr.log import site_logger
+from db import mysql_connector, retrieve_tables
+from log import site_logger
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 # Login in Admin Page
-@bp.route("/login", methods=['GET', 'POST'])
+@bp_auth.route("/login", methods=['GET', 'POST'])
 def login():
     _ , myCursor = mysql_connector()
 
@@ -47,7 +47,7 @@ def login():
                     title="تسجيل الدخول")
 
 # Load the logged in user details
-@bp.before_app_request
+@bp_auth.before_app_request
 def load_logged_in_user():
     admin_id = session.get('id')
 
@@ -59,7 +59,7 @@ def load_logged_in_user():
         g.user = myCursor.fetchone()
 
 # Logout
-@bp.route("/logout")
+@bp_auth.route("/logout")
 def logout():
   # Remove session data, this will log the user out
   username = session['username']

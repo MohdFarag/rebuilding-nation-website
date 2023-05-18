@@ -3,7 +3,7 @@ import mysql.connector
 from mysql.connector import errorcode
 import click
 from flask import current_app, g
-from flaskr.log import site_logger
+from log import site_logger
 
 config = {
     'user': 'root', 
