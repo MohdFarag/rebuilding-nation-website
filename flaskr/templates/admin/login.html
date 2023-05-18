@@ -9,7 +9,7 @@
         <div {% if status == True %} hidden {% endif %} class="alert alert-danger" role="alert">
           إسم المستخدم أو كلمة السر خطأ
         </div>
-        <form action="{{ url_for('login') }}" method="POST" class="pt-3">
+        <form action="{{ url_for('auth.login') }}" method="POST" class="pt-3">
           <div class="form-group">
             <input type="text" name="username" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="إسم المستخدم">
           </div>

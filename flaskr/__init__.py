@@ -10,6 +10,7 @@ from flaskr.log import site_logger
 from . import db
 from . import auth
 from . import site
+from . import admin
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
@@ -54,6 +55,8 @@ def create_app(test_config=None):
 
     app.register_blueprint(auth.bp)
     app.register_blueprint(site.bp)
+    app.register_blueprint(admin.bp)
+
     app.add_url_rule('/', endpoint='index')
 
     return app
