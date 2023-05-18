@@ -7,16 +7,16 @@ from flask import (
 )
 from werkzeug.exceptions import abort
 
-from auth import login_required
-from db import mysql_connector, retrieve_tables
+from flaskr.auth import login_required
+from flaskr.db import mysql_connector, retrieve_tables
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.exceptions import HTTPException
 
 import pandas as pd
 import math
 
-from log import site_logger
-from config import Config
+from flaskr.log import site_logger
+from flaskr.config import Config
 
 
 #--------------------------------------------------------------------------#

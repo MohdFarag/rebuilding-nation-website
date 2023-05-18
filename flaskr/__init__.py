@@ -5,12 +5,12 @@ import os
 
 from flask import Flask
 
-from log import site_logger
+from flaskr.log import site_logger
 
-import db
-from auth import bp_auth
-from website import bp_site
-from admin import bp_admin
+from flaskr import db
+from flaskr.auth import bp_auth
+from flaskr.website import bp_site
+from flaskr.admin import bp_admin
 
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.exceptions import HTTPException
@@ -18,6 +18,7 @@ from werkzeug.utils import import_string
 
 #--------------------------------------------------------------------------#
 
+"""Our app"""
 # __ init __
 def create_app(test_config=None):
     # create and configure the app

@@ -5,8 +5,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from db import mysql_connector, retrieve_tables
-from log import site_logger
+from flaskr.db import mysql_connector, retrieve_tables
+from flaskr.log import site_logger
 
 bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
