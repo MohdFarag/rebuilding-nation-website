@@ -18,7 +18,6 @@ from werkzeug.utils import import_string
 
 #--------------------------------------------------------------------------#
 
-"""Our app"""
 # __ init __
 def create_app(test_config=None):
     # create and configure the app
