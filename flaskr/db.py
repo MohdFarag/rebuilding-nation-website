@@ -4,19 +4,13 @@ from mysql.connector import errorcode
 import click
 from flask import current_app, g
 from flaskr.log import site_logger
+from flaskr.config import DB_CONFIG
 
-config = {
-    'user': 'root', 
-    'password': '01140345493', 
-    'host': '127.0.0.1', 
-    'port': '3306', 
-    'database': 'rebuild_notion'
-}
 
 # Connecting with Database
 def mysql_connector():
     try:
-        g.db = mysql.connector.connect(**config)
+        g.db = mysql.connector.connect(**DB_CONFIG)
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             site_logger.exception("Something is wrong with your username or password")

@@ -85,7 +85,7 @@ def addBook():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
-    status = -1
+    status = False
     
     if request.method == 'POST':
         name  = request.form['name']
@@ -99,7 +99,7 @@ def addBook():
     
         myCursor.execute("""INSERT INTO Book(name, description, img, link, created_at) VALUES (%s,%s,%s,%s,%s)""",
                                             (name, description, image_path, link_path, createdAt))
-        status = 1
+        status = True
         mydb.commit() # Work Is DONE
 
     return render_template("admin/addbook.html",
