@@ -2,12 +2,12 @@
 {% block control %}
 
 <form enctype="multipart/form-data" action="" method="post" class="CairoPlay">
-    <div {% if status != 0 %} hidden {% endif %} class="alert alert-danger" role="alert">
+    <!-- <div {% if status != 0 %} hidden {% endif %} class="alert alert-danger" role="alert">
         هناك خطأ
     </div>
     <div {% if status != 1 %} hidden {% endif %} class="alert alert-success" role="alert">
         تمت الإضافة بنجاح
-    </div>
+    </div> -->
     <div class="form-floating">
         <input type="text" class="form-control mb-3" id="name" name="name" placeholder="عنوان المقال" value="{{article[1]}}">
         <label for="name">عنوان المقال</label>
