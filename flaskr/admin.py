@@ -18,13 +18,43 @@ import math
 
 from flaskr.log import site_logger
 from flaskr.config import Config
-
 #--------------------------------------------------------------------------#
 
 bp_admin = Blueprint('admin', __name__, url_prefix='/admin')
 UPLOAD_FOLDER = Config.UPLOAD_FOLDER
 
+"""Constants"""
+ALLOWED_EXTENSIONS_DOC = set(['pdf', 'doc', 'xlsx', 'png', 'jpg', 'jpeg'])
+
 #--------------------------------------------------------------------------#
+"""Functions"""
+# Get Request
+def argsGet(argName):
+    if request.args.get(argName):
+        field = request.args.get(argName)
+    else:
+        field = ""  
+    return field
+
+# Check Extension of file
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS_DOC
+
+# Save file
+def saveFile(list, id, fileName):
+
+    if list and allowed_file(list.filename):
+      filename = secure_filename(fileName + "." + list.filename.rsplit('.', 1)[1])
+      path = UPLOAD_FOLDER + id + "/" 
+      os.makedirs(path, exist_ok=True)
+      list.save(os.path.join(path, filename))
+      return path[7:] + filename
+    else:
+      return ""
+
+#--------------------------------------------------------------------------#
+
 
 # Home
 @bp_admin.route("/")
@@ -112,11 +142,17 @@ def addBook():
 @bp_admin.route("/RemoveBook", methods=['GET', 'POST'])
 @login_required
 def removeBook():
+    mydb, myCursor = mysql_connector()
+
     id = argsGet("id")
+    myCursor.execute("""SELECT `name` FROM Book WHERE id=%s""",(id,))
+    book_name = myCursor.fetchone()
+    rmtree(UPLOAD_FOLDER + book_name[0] + "/")
+    
     myCursor.execute("""DELETE FROM Book WHERE id=%s""",(id,))
     mydb.commit() # Work Is DONE
 
-    return redirect(url_for('adminBooks'))
+    return redirect(url_for('admin.adminBooks'))
 
 # Admin | Edit Book Page
 @bp_admin.route("/EditBook", methods=['GET', 'POST'])
@@ -190,7 +226,7 @@ def addArticle():
       status = 1
       mydb.commit() # Work Is DONE
 
-    return render_template("admin/addArticle.html",
+    return render_template("admin/addarticle.html",
                   name=settings[0][1],
                   title="إضافة مقال",
                   settings=settings[0],
@@ -200,11 +236,13 @@ def addArticle():
 @bp_admin.route("/RemoveArticle", methods=['GET', 'POST'])
 @login_required
 def removeArticle():
+    mydb, myCursor = mysql_connector()
+
     id = argsGet("id")
     myCursor.execute("""DELETE FROM Article WHERE id=%s""",(id,))
     mydb.commit() # Work Is DONE
 
-    return redirect(url_for('adminArticles'))
+    return redirect(url_for('Admin.adminArticles'))
 
 # Admin | Edit Book Page
 @bp_admin.route("/EditArticle", methods=['GET', 'POST'])
