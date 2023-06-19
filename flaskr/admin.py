@@ -145,11 +145,11 @@ def removeBook():
     mydb, myCursor = mysql_connector()
 
     id = argsGet("id")
-    myCursor.execute("""SELECT `name` FROM Book WHERE id=%s""",(id,))
+    myCursor.execute("""SELECT `name` FROM book WHERE id=%s""",(id,))
     book_name = myCursor.fetchone()
     rmtree(UPLOAD_FOLDER + book_name[0] + "/")
     
-    myCursor.execute("""DELETE FROM Book WHERE id=%s""",(id,))
+    myCursor.execute("""DELETE FROM book WHERE id=%s""",(id,))
     mydb.commit() # Work Is DONE
 
     return redirect(url_for('admin.adminBooks'))
@@ -164,7 +164,7 @@ def editBook():
     settings = db_tables['settings']
 
     id = argsGet("id")
-    myCursor.execute(f"""SELECT * FROM Book WHERE id={id}""")
+    myCursor.execute(f"""SELECT * FROM book WHERE id={id}""")
     book = myCursor.fetchone()
 
     if request.method == 'POST':
