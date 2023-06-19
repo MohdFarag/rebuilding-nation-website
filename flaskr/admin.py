@@ -127,7 +127,7 @@ def addBook():
         createdAt = pd.to_datetime("today")
         createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
     
-        myCursor.execute("""INSERT INTO Book(name, description, img, link, created_at) VALUES (%s,%s,%s,%s,%s)""",
+        myCursor.execute("""INSERT INTO book(name, description, img, link, created_at) VALUES (%s,%s,%s,%s,%s)""",
                                             (name, description, image_path, link_path, createdAt))
         status = True
         mydb.commit() # Work Is DONE
