@@ -241,7 +241,7 @@ def removeArticle():
     mydb, myCursor = mysql_connector()
 
     id = argsGet("id")
-    myCursor.execute("""DELETE FROM Article WHERE id=%s""",(id,))
+    myCursor.execute("""DELETE FROM article WHERE id=%s""",(id,))
     mydb.commit() # Work Is DONE
 
     return redirect(url_for('Admin.adminArticles'))
