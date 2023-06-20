@@ -244,7 +244,7 @@ def removeArticle():
     myCursor.execute("""DELETE FROM article WHERE id=%s""",(id,))
     mydb.commit() # Work Is DONE
 
-    return redirect(url_for('Admin.adminArticles'))
+    return redirect(url_for('admin.adminArticles'))
 
 # Admin | Edit Book Page
 @bp_admin.route("/EditArticle", methods=['GET', 'POST'])
