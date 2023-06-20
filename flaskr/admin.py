@@ -223,7 +223,7 @@ def addArticle():
       createdAt = pd.to_datetime("today")
       createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
     
-      myCursor.execute("""INSERT INTO Article(name, text, created_at) VALUES (%s,%s,%s)""",
+      myCursor.execute("""INSERT INTO article(name, text, created_at) VALUES (%s,%s,%s)""",
                                           (name, text, createdAt))
       status = 1
       mydb.commit() # Work Is DONE
