@@ -20,7 +20,7 @@ from werkzeug.utils import import_string
 
 """Our app"""
 # __ init __
-def create_app(test_config=None):
+def create_app(test_config=None, db_file='flaskr.mySql.connector'):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -60,7 +60,3 @@ def create_app(test_config=None):
     app.add_url_rule('/', endpoint='index')
 
     return app
-
-if __name__ == "__main__":
-    app = create_app()
-    app.run()
