@@ -40,7 +40,7 @@ CREATE TABLE `settings` (
   `title` varchar(150) DEFAULT "تَربيَة الأُمةِ مِنْ جَديدٍ",
   `cover_text` varchar(200) DEFAULT "{فَاعْلَمْ أَنَّهُ لَا إِلَٰهَ إِلَّا اللَّهُ}",
   `admin_username` varchar(50) DEFAULT "Admin",
-  `admin_password` varchar(50) DEFAULT "12345",
+  `admin_password` text DEFAULT "12345",
   PRIMARY KEY (`id`)
 );
 

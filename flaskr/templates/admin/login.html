@@ -6,9 +6,15 @@
       <div class="auth-form-light text-left py-5 px-4 px-sm-5 CairoPlay">
         <h4>السلام عليكم !</h4>
         <h6 class="fw-light">تسجيل الدخول</h6>
-        <!-- <div {% if status == True %} hidden {% endif %} class="alert alert-danger" role="alert">
-          إسم المستخدم أو كلمة السر خطأ
-        </div> -->
+        {% with errors = get_flashed_messages(category_filter=["error"]) %}
+          {% if errors %} 
+            <div class="alert alert-danger" role="alert">
+              {% for msg in errors %}
+              <li>{{msg}}</li>
+              {% endfor %}
+            </div>
+          {% endif %} 
+        {% endwith %}  
         <form action="{{ url_for('auth.login') }}" method="POST" class="pt-3">
           <div class="form-group">
             <input type="text" name="username" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="إسم المستخدم">

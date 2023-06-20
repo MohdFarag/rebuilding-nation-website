@@ -16,6 +16,7 @@ from werkzeug.exceptions import HTTPException
 import pandas as pd
 import math
 
+from flaskr.errors import settings_updated, book_added, book_failed, article_added, article_failed
 from flaskr.log import site_logger
 from flaskr.config import Config
 #--------------------------------------------------------------------------#
@@ -75,13 +76,14 @@ def admin():
       title  = request.form['title']
       username  = request.form['username']
       password  = request.form['password']
-
       myCursor.execute("""
       UPDATE settings
       SET title=%s, cover_text=%s, admin_username=%s, admin_password=%s
       WHERE id=1;
-      """,(name,title,username,password))
+      """,(name,title,username,generate_password_hash(password)))
       mydb.commit()
+      
+      flash(settings_updated, "success")
 
     return render_template("admin/index.html",
                   name=settings[0][1],
