@@ -20,10 +20,9 @@ from werkzeug.utils import import_string
 
 """Our app"""
 # __ init __
-def create_app(test_config=None, db_file='flaskr.mySql.connector'):
+def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.wsgi_app = ProxyFix(app.wsgi_app)
 
     # configuration
     cfg = import_string('flaskr.config.Config')()
