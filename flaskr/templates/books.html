@@ -30,7 +30,9 @@
                     {% for book in books %}
                     <div class="col-lg-3 col-md-4 col-sm-6 mt-3">
                         <div class="card CairoPlay">
-                            <img src="{{book[3]}}" class="card-img-top h-25" alt="العنوان">
+                            <div class=" image-container">
+                                <img onerror='handleImageError("{{book[1]}}")' src="{{book[3]}}" class="card-img-top h-25" alt="{{book[1]}}">
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title fw-bolder reemKufi h3">{{book[1]}}</h5>
                                 <p class="card-text">

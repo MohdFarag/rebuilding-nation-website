@@ -39,24 +39,7 @@ def argsGet(argName):
     else:
         field = ""  
     return field
-
-# Check Extension of file
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS_DOC
-
-# Save file
-def saveFile(list, sn, fileName):
-
-    if list and allowed_file(list.filename):
-      filename = secure_filename(fileName + "." + list.filename.rsplit('.', 1)[1])
-      path = app.config['UPLOAD_FOLDER'] + sn + "/" 
-      os.makedirs(path, exist_ok=True)
-      list.save(os.path.join(path, filename))
-      return path + filename
-    else:
-      return ""
-
+          
 #--------------------------------------------------------------------------#
 
 """ Routes of Pages """

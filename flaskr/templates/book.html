@@ -6,8 +6,8 @@
     <div class="container px-4">
         <div class="row gx-4 justify-content-center">
             <div class="row g-0 bg-light position-relative">
-                <div class="col-md-2 mb-md-0 p-md-4">
-                  <img style="max-height:350px ;" src="{{bookData[3]}}" class="w-100" alt="{{title}}">
+                <div class="col-md-2 mb-md-0 p-md-4 image-container">
+                    <img id="bookCover" style="max-height:350px ;" onerror='handleImageError("{{title}}")' src="{{bookData[3]}}" class="w-100" alt="{{title}}">
                 </div>
                 <div class="col-md-10 p-4 ps-md-0">
                   <h3 class="mt-0">{{title}} | <span href="#" class="text-dark h6">{{bookData[5]}}</span></h3>

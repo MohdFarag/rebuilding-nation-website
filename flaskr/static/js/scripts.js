@@ -32,3 +32,20 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+
+
+function handleImageError(titleBook) {
+    // This function will be called when the image source is not found
+    // Place your JavaScript code here
+    var img = event.target;
+    img.src = "./static/assets/defaultBook.jpg";
+    var imgContainer = event.target.parentNode;
+    var title = imgContainer.querySelector('.BookTitle');
+    
+    if (!title) {
+      title = document.createElement('div');
+      title.classList.add('BookTitle');
+      title.textContent = titleBook;
+      imgContainer.appendChild(title);
+    }    
+}

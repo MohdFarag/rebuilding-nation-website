@@ -102,3 +102,26 @@ header:hover {
 .mr-4{
     margin-right: 10px;
 }
+
+.image-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .image-container img {
+    display: block;
+    border: 2px solid #c1c1c1;
+
+  }
+  
+  .image-container .BookTitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-size: 24px;
+    text-align: center;
+    background-color: rgb(223 223 223 / 70%);
+    padding: 10px;
+  }
