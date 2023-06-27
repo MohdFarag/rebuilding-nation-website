@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block main %}
+
+<!-- Books section-->
+<section class="bg-light Changa" id="book">
+    <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+            <div class="row g-0 bg-light position-relative">
+                <h3 class="mt-0">{{title}} | <span href="#" class="text-dark h6">{{video[5]}}</span></h3>
+            </div>
+        </div>
+        <hr>
+        <div class="row gx-4 justify-content-center">
+            <div class="col-lg-12">
+                <video width="320" height="240" controls>
+                    <source src="{{url_for('static', filename=file)}}" type="video/mp4">
+                    Error Message
+                </video>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

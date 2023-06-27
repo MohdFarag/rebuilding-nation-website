@@ -19,8 +19,9 @@ import math
 from flaskr.messages import *
 from flaskr.log import site_logger
 from flaskr.config import Config
-#--------------------------------------------------------------------------#
 
+#--------------------------------------------------------------------------#
+"""Blueprint"""
 bp_admin = Blueprint('admin', __name__, url_prefix='/admin')
 UPLOAD_FOLDER = Config.UPLOAD_FOLDER
 
@@ -28,6 +29,13 @@ UPLOAD_FOLDER = Config.UPLOAD_FOLDER
 ALLOWED_EXTENSIONS_DOC = set(['pdf'])
 ALLOWED_EXTENSIONS_IMG = set(['png', 'jpg', 'jpeg'])
 ALLOWED_EXTENSIONS_PP = set(['pptx','ppt'])
+ALLOWED_EXTENSIONS_VID = set(['mp4','webm','mkv','flv'])
+#--------------------------------------------------------------------------#
+
+DOCUMENT   = "doc"
+VIDEO      = "vid"
+POWERPOINT = "pp"
+IMAGE      = "img"
 
 #--------------------------------------------------------------------------#
 """Functions"""
@@ -58,26 +66,35 @@ def get_request_from_file(input):
 
 # Check Extension of file
 def allowed_file(filename, type):
-    if type == "doc":
+    if type == DOCUMENT:
         return '.' in filename and \
             filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS_DOC
-    elif type == "img":
+    elif type == IMAGE:
         return '.' in filename and \
             filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS_IMG
-    elif type == "pp":
+    elif type == POWERPOINT:
         return '.' in filename and \
             filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS_PP
-
+    elif type == VIDEO:
+        return '.' in filename and \
+            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS_VID
 
 # Save file
-def saveFile(list, id, fileExt="doc"):
+def saveFile(list, id, fileExt=DOCUMENT):
 
     if list and allowed_file(list.filename, fileExt):
-      filename = secure_filename(fileExt + "." + list.filename.rsplit('.', 1)[1])
-      path = UPLOAD_FOLDER + id + "/" 
-      os.makedirs(path, exist_ok=True)
-      list.save(os.path.join(path, filename))
-      return path[7:] + filename
+        filename = secure_filename(fileExt + "." + list.filename.rsplit('.', 1)[1])
+        if fileExt == DOCUMENT or fileExt == IMAGE:
+            path = f"{UPLOAD_FOLDER}/Books/{id}/"
+        elif fileExt == POWERPOINT:
+            path = f"{UPLOAD_FOLDER}/Presentations/{id}/"
+        elif fileExt == VIDEO:
+            path = f"{UPLOAD_FOLDER}/Videos/{id}/"
+        
+        path = UPLOAD_FOLDER + id + "/" 
+        os.makedirs(path, exist_ok=True)
+        list.save(os.path.join(path, filename))
+        return path[7:] + filename
     else:
       return ""
 
@@ -100,8 +117,8 @@ def admin():
 
     if request.method == 'POST':
         try:
-            name  = get_request_from_form('name')
-            title  = get_request_from_form('title')
+            name  = request.form['name']
+            title  = request.form['title']
             username  = get_request_from_form('username')
             myCursor.execute("""
                 UPDATE settings
@@ -190,9 +207,9 @@ def addBook():
             name  = get_request_from_form('name')
             description  = get_request_from_form('description')
             image  = get_request_from_file('image')
-            image_path = saveFile(image, name, "img") 
+            image_path = saveFile(image, name, IMAGE) 
             link  = get_request_from_file('link')
-            link_path = saveFile(link, name, "doc")
+            link_path = saveFile(link, name, DOCUMENT)
             createdAt = pd.to_datetime("today")
             createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
         
@@ -249,14 +266,8 @@ def editBook():
         try:
             name  = get_request_from_form('name')
             description  = get_request_from_form('description')
-            image  = get_request_from_file('image')
-            image_path = saveFile(image, name, "img")
-            link  = get_request_from_file('link')
-            link_path = saveFile(link, name, "doc") 
-            createdAt = pd.to_datetime("today")
-            createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
 
-            myCursor.execute(f"""UPDATE book SET name='{name}', description='{description}', img='{image_path}', link='{link_path}',created_at='{createdAt}' WHERE id={id}""")
+            myCursor.execute(f"""UPDATE book SET name='{name}', description='{description}' WHERE id={id}""")
             mydb.commit()
             
             flash(book_edited_success, "success")
@@ -270,6 +281,75 @@ def editBook():
                 title="تعديل كتاب",
                 settings=settings[0],
                 book=book)
+
+# Admin | Edit Book Page
+@bp_admin.route("/EditBookImage", methods=['GET', 'POST'])
+@login_required
+def editBookImage():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    id = argsGet("id")
+    myCursor.execute(f"""SELECT * FROM book WHERE id={id}""")
+    book = myCursor.fetchone()
+
+    if request.method == 'POST':
+        try:           
+            name = book[1]
+            image  = get_request_from_file('image')
+            image_path = saveFile(image, name, IMAGE)
+            
+            myCursor.execute(f"""UPDATE book SET img='{image_path}' WHERE id={id}""")
+            mydb.commit()
+            
+            flash(book_edited_success, "success")
+            
+        except Exception as err:
+            flash(book_edited_failed, "danger")
+            flash(err, "reasons")
+
+    return render_template("admin/editBookImage.html",
+                name=settings[0][1],
+                title="تعديل صورة الكتاب",
+                settings=settings[0],
+                book=book)
+
+# Admin | Edit Book Page
+@bp_admin.route("/EditBookLink", methods=['GET', 'POST'])
+@login_required
+def editBookLink():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    id = argsGet("id")
+    myCursor.execute(f"""SELECT * FROM book WHERE id={id}""")
+    book = myCursor.fetchone()
+
+    if request.method == 'POST':
+        try:
+            name = book[1]
+            link  = get_request_from_file('link')
+            link_path = saveFile(link, name, DOCUMENT) 
+            
+            myCursor.execute(f"""UPDATE book SET link='{link_path}' WHERE id={id}""")
+            mydb.commit()
+            
+            flash(book_edited_success, "success")
+            
+        except Exception as err:
+            flash(book_edited_failed, "danger")
+            flash(err, "reasons")
+
+    return render_template("admin/editBookLink.html",
+                name=settings[0][1],
+                title="تعديل الكتاب",
+                settings=settings[0],
+                book=book)
+
 
 # Admin | List of Articles Page
 @bp_admin.route("/articles")

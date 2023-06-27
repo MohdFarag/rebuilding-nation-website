@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block main %}
+
+<!-- Books section-->
+<section class="bg-light Changa" id="book">
+    <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+            <div class="row g-0 bg-light position-relative">
+                <div class="col-md-2 mb-md-0 p-md-4 image-container">
+                    <img id="bookCover" style="max-height:350px ;" onerror='handleImageError("{{title}}")' src="{{presentation[3]}}" class="w-100" alt="{{title}}">
+                </div>
+                <div class="col-md-10 p-4 ps-md-0">
+                  <h3 class="mt-0">{{title}} | <span href="#" class="text-dark h6">{{presentation[5]}}</span></h3>
+                  
+                  {% for para in paras %}
+                    <p class="text-justify">{{para|safe}}</p>
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row gx-4 justify-content-center">
+            <div class="col-lg-12">
+                <div id="book1"></div>
+                <script>PDFObject.embed("{{presentation[4]}}", "#book1");</script>
+                <a href="{{presentation[4]}}">
+                    <center><button class="btn btn-danger mt-5 Changa">تحميل الكتاب</button></center>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

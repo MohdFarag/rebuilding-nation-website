@@ -11,24 +11,7 @@
         <textarea style="min-height: 100px" class="form-control mb-3" id="description" name="description" placeholder="عنوان الغلاف">{{book[2]|safe}}</textarea>
         <label for="description">وصف الكتاب</label>
     </div>
-
-    <div>
-        <label for="image">صورة الكتاب</label>
-        <div>
-            <input type="file" class="mb-5" id="image" name="image" disabled>
-            <button id="enable-image" type="button" class="btn btn-dark" onclick="disableEnableInput('image')">تعديل</button>
-        </div>
-        <img class="img-fluid img-thumbnail" src="../{{book[3]}}" />
-    </div>
-
-    <div>
-        <label for="link">رابط الكتاب</label>
-        <div>
-            <input type="file" class="mb-5" id="link" name="link" disabled>
-            <button id="enable-link" type="button" class="btn btn-dark" onclick="disableEnableInput('link')">تعديل</button>
-        </div>
-    </div>
-
+    
     <input class="btn btn-dark float-end" type="submit" value="تعديل">
 </form>
 

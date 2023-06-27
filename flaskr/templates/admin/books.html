@@ -18,6 +18,7 @@
         <th scope="col">الرابط</th>
         <th scope="col"></th>
         <th scope="col"></th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -26,9 +27,10 @@
         <th scope="row">{{book[0]}}</th>
         <td>{{book[1]}}</td>
         <td>{{book[2]}}.....</td>
-        <td><img class="img-fluid img-thumbnail" src="../{{book[3]}}"/></td>
+        <td><img class="img-fluid img-thumbnail" src="../{{book[3]}}"/><a href="./EditBookImage?id={{book[0]}}">تعديل الصورة</a></td>
         <td><a href="../{{book[4]}}">إضغط هنا</a></td>
-        <td><a href="./EditBook?id={{book[0]}}">تعديل الكتاب</a></td>
+        <td><a href="./EditBook?id={{book[0]}}">تعديل بيانات الكتاب</a></td>
+        <td><a href="./EditBookLink?id={{book[0]}}">تغيير الكتاب</a></td>
         <td><a href="./RemoveBook?id={{book[0]}}">حذف الكتاب</a></td>
       </tr>
     {% endfor %}

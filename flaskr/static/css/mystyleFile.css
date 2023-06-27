@@ -3,6 +3,10 @@ html {
     background-color: #212529;
 }
 
+body {
+    background-color: #000000;
+}
+
 .text-justify{
     text-align: justify;
 }
@@ -39,18 +43,17 @@ html {
 
 /* Header */
 header{
-    padding-top: 10rem;
-    padding-bottom: 6rem;
-    background: url(../assets/cover5.jpg) !important;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: 100% 100%;
-    opacity: 1.0;
+    background: url(../assets/cover.jpg) no-repeat !important;
+    background-size: contain !important;
+    background-position: center !important;
+    padding: 300px 0;
+    margin-top: 56px;
 }
 
 section {
     padding-top: 5rem;
     padding-bottom: 8rem;
+    background: #fff;
 }
 
 header:hover {
