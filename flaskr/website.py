@@ -110,7 +110,7 @@ def book():
                     paras=paras)
 
 
-# Books Page
+# Articles Page
 @bp_site.route("/articles")
 def articles():
     _, myCursor = mysql_connector()

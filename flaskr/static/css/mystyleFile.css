@@ -131,3 +131,8 @@ header:hover {
     text-align: justify;
     font-family: Calibri,Arial,Amiri,sans-serif;
   }
+
+
+.table tfoot{
+    font-weight: bold;
+}

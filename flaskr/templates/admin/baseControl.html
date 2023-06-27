@@ -9,6 +9,7 @@
             <div class="col-md-4">                
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-action {%if title=='لوحة التحكم' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.home') }}">الإعدادات</a></li> <!-- aria-current="true" -->
+                    <li class="list-group-item list-group-item-action {%if title=='تغيير كلمة المرور' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.changePassword') }}">تغيير كلمة المرور</a></li> <!-- aria-current="true" -->
                     <li class="list-group-item list-group-item-action {%if title=='قائمة الكتب' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.adminBooks') }}">الكتب</a></li>
                     <li class="list-group-item list-group-item-action {%if title=='قائمة المقالات' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.adminArticles') }}">المقالات</a></li>
                 </ul>
@@ -16,7 +17,40 @@
             <div class="col-md-1">
             </div>
             <div class="col-md-7">
-                <div class="row">
+                <div class="row CairoPlay">
+                    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+                        {% if messages %} 
+                        <div class="alert alert-success" role="alert">
+                            {% for msg in messages %}
+                                <li>{{msg}}</li>
+                            {% endfor %}
+                        </div>
+                        {% endif %} 
+                    {% endwith %}
+                    {% with messages = get_flashed_messages(category_filter=["danger"]) %}
+                        {% if messages %} 
+                        <div class="alert alert-danger" role="alert">
+                            <ul>
+                            {% for msg in messages %}
+                                <li>{{msg}}
+                                
+                                    {% with reasons = get_flashed_messages(category_filter=["reasons"]) %}
+                                        {% if messages %} 
+                                        <ul>
+                                            {% for reason in reasons %}
+                                                <li>{{reason}}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                    {% endwith %}
+                                    
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    {% endwith %}
+            
                     {% block control %}
                     {% endblock %}
                 </div>
@@ -24,8 +58,5 @@
         </div>
     </div>
 </section>
-
-<navbar></navbar>
-
 
 {% endblock %}

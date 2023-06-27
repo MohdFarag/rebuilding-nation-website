@@ -8,7 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.db import mysql_connector, retrieve_tables
 from flaskr.log import site_logger
 
-from flaskr.errors import username_wrong, password_wrong
+from flaskr.messages import username_wrong, password_wrong
 
 bp_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -77,7 +77,7 @@ def logout():
   # Remove session data, this will log the user out
   username = session['username']
   session.clear()
-  site_logger.info(f'admin {username} logged out succefully.')
+  site_logger.info(f'admin {username} logged out successfully.')
 
   # Redirect to login page
   return redirect(url_for('auth.login'))

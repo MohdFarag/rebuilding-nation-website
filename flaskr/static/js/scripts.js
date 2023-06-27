@@ -49,3 +49,14 @@ function handleImageError(titleBook) {
       imgContainer.appendChild(title);
     }    
 }
+
+function disableEnableInput(inputClassName){
+
+    input = document.getElementById(inputClassName);
+    input.disabled=!input.disabled;
+
+    button = document.getElementById('enable-' + inputClassName);
+    button.className = (button.className == 'btn btn-dark') ? 'btn btn-primary' : 'btn btn-dark';
+    button.innerHTML = (button.innerHTML == 'تعديل') ? 'تم' : 'تعديل';
+    
+}

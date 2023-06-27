@@ -1,13 +1,7 @@
 {% extends 'admin/baseControl.html' %}
 {% block control %}
 
-<form enctype="multipart/form-data" action="" method="post" class="CairoPlay">
-    <!-- <div {% if status != 0 %} hidden {% endif %} class="alert alert-danger" role="alert">
-        هناك خطأ
-    </div>
-    <div {% if status != 1 %} hidden {% endif %} class="alert alert-success" role="alert">
-        تمت الإضافة بنجاح
-    </div> -->
+<form enctype="multipart/form-data" action="" method="post" class="CairoPlay row g-3">
     <div class="form-floating">
         <input type="text" class="form-control mb-3" id="name" name="name" placeholder="إسم الموقع" value="{{book[1]}}">
         <label for="name">إسم الكتاب</label>
@@ -20,13 +14,19 @@
 
     <div>
         <label for="image">صورة الكتاب</label>
-        <input type="file" class="form-control mb-3" id="image" name="image">
+        <div>
+            <input type="file" class="mb-5" id="image" name="image" disabled>
+            <button id="enable-image" type="button" class="btn btn-dark" onclick="disableEnableInput('image')">تعديل</button>
+        </div>
         <img class="img-fluid img-thumbnail" src="../{{book[3]}}" />
     </div>
 
     <div>
         <label for="link">رابط الكتاب</label>
-        <input type="file" class="form-control mb-3" id="link" name="link">
+        <div>
+            <input type="file" class="mb-5" id="link" name="link" disabled>
+            <button id="enable-link" type="button" class="btn btn-dark" onclick="disableEnableInput('link')">تعديل</button>
+        </div>
     </div>
 
     <input class="btn btn-dark float-end" type="submit" value="تعديل">
