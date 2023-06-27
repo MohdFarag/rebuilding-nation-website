@@ -26,11 +26,6 @@ UPLOAD_FOLDER = Config.UPLOAD_FOLDER
 
 #--------------------------------------------------------------------------#
 
-"""Constants"""
-ALLOWED_EXTENSIONS_DOC = set(['pdf', 'doc', 'xlsx', 'png', 'jpg', 'jpeg'])
-
-#--------------------------------------------------------------------------#
-
 """Functions"""
 # Get Request
 def argsGet(argName):
@@ -149,6 +144,79 @@ def article():
                     coverTitle=settings[0][2],
                     title=title,
                     articleText=articleText)
+    
+
+# Videos Page
+@bp_site.route("/videos")
+def videos():
+    _, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), `created_at` FROM article Order by created_at DESC")
+    videos = myCursor.fetchall()
+
+    return render_template("videos.html",
+                    name=settings[0][1],
+                    coverTitle=settings[0][2],
+                    video=videos,
+                    title="فيديوهات")
+
+# Video Page
+@bp_site.route("/video")
+def video():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+  
+    video_id = argsGet("id")
+    myCursor.execute(f"SELECT * FROM book WHERE id={video_id}")
+    video =myCursor.fetchone()
+    
+    return render_template("book.html",
+                    title=video[1],
+                    name=settings[0][1],
+                    video=video)
+
+
+# Presentations Page
+@bp_site.route("/presentations")
+def presentations():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    myCursor.execute(f"SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `created_at` FROM book Order by created_at DESC")
+    presentations = myCursor.fetchall()
+
+    return render_template("presentations.html",
+                    name=settings[0][1],
+                    coverTitle=settings[0][2],
+                    presentations=presentations,
+                    title="العروض التقديمية")
+
+# Book Page
+@bp_site.route("/presentation")
+def presentation():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+  
+    book_id = argsGet("id")
+    myCursor.execute(f"SELECT * FROM book WHERE id={book_id}")
+    presentation =myCursor.fetchone()
+    
+    paras = presentation[2].split('\n')
+    return render_template("presentation.html",
+                    title=presentation[1],
+                    name=settings[0][1],
+                    coverTitle=settings[0][2],
+                    presentation=presentation,
+                    paras=paras)
 
 #--------------------------------------------------------------------------#
 
