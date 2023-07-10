@@ -170,7 +170,7 @@ def changePassword():
             flash(password_updated_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/changePassword.html",
+    return render_template("admin/change-password.html",
                   name=settings[0][1],
                   title="تغيير كلمة المرور",
                   settings=settings[0])
@@ -223,7 +223,7 @@ def addBook():
             flash(book_added_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/addbook.html",
+    return render_template("admin/add-book.html",
                     name=settings[0][1],
                     title="إضافة كتاب",
                     settings=settings[0])
@@ -276,7 +276,7 @@ def editBook():
             flash(book_edited_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/editbook.html",
+    return render_template("admin/edit-book.html",
                 name=settings[0][1],
                 title="تعديل كتاب",
                 settings=settings[0],
@@ -310,7 +310,7 @@ def editBookImage():
             flash(book_edited_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/editBookImage.html",
+    return render_template("admin/edit-book-image.html",
                 name=settings[0][1],
                 title="تعديل صورة الكتاب",
                 settings=settings[0],
@@ -344,7 +344,7 @@ def editBookLink():
             flash(book_edited_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/editBookLink.html",
+    return render_template("admin/edit-book-link.html",
                 name=settings[0][1],
                 title="تعديل الكتاب",
                 settings=settings[0],
@@ -395,7 +395,7 @@ def addArticle():
             flash(article_added_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/addarticle.html",
+    return render_template("admin/add-article.html",
                   name=settings[0][1],
                   title="إضافة مقال",
                   settings=settings[0])
@@ -441,7 +441,7 @@ def editArticle():
             flash(article_edited_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/editArticle.html",
+    return render_template("admin/edit-article.html",
                   name=settings[0][1],
                   title="تعديل كتاب",
                   settings=settings[0],

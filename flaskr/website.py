@@ -9,7 +9,6 @@ from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import mysql_connector, retrieve_tables
-from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.exceptions import HTTPException
 
 import pandas as pd
@@ -219,41 +218,3 @@ def presentation():
                     paras=paras)
 
 #--------------------------------------------------------------------------#
-
-#-----------Error Handler-----------#
-
-# Error Handle exception
-@bp_site.errorhandler(HTTPException)
-def handle_exception(e):
-    """Return JSON instead of HTML for HTTP errors."""
-    # start with the correct headers and status code from the error
-    response = e.get_response()
-    # replace the body with JSON
-    response.data = json.dumps({
-        "code": e.code,
-        "name": e.name,
-        "description": e.description,
-    })
-    response.content_type = "application/json"
-    return response
-
-# Page 500
-@bp_site.errorhandler(500)
-def internal_server_error(e):
-    # pass through HTTP errors
-    if isinstance(e, HTTPException):
-        return e
-
-    # now you're handling non-HTTP exceptions only
-    return render_template("500.html", e=e), 500
-
-# Page 404
-@bp_site.errorhandler(405)
-@bp_site.errorhandler(404)
-def page_not_found(e):
-    # pass through HTTP errors
-    if isinstance(e, HTTPException):
-        return e
-
-    # now you're handling non-HTTP exceptions only
-    return render_template("404.html", e=e), 404
