@@ -145,14 +145,23 @@ def changePassword():
     
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
+    myCursor.execute('SELECT admin_password FROM settings WHERE id=1')
+    admin_password = myCursor.fetchone()[0]
+    
+    show_old_password = True
+    if admin_password == "":
+        show_old_password = False
 
     if request.method == 'POST':
         try:
             myCursor.execute('SELECT admin_password FROM settings WHERE id=1')
-
-            old_password  = get_request_from_form('old_password')
             admin_password = myCursor.fetchone()[0]
-            if check_password_hash(admin_password, old_password):
+            if show_old_password:
+                old_password = get_request_from_form('old_password')
+            else:
+                old_password = request.form['old_password']
+                
+            if admin_password == "" or check_password_hash(admin_password, old_password):
                 new_password  = get_request_from_form('new_password')
                 myCursor.execute("""
                     UPDATE settings
@@ -173,7 +182,8 @@ def changePassword():
     return render_template("admin/change-password.html",
                   name=settings[0][1],
                   title="تغيير كلمة المرور",
-                  settings=settings[0])
+                  settings=settings[0],
+                  show_old_password=show_old_password)
 
 # Admin | List of Books Page
 @bp_admin.route("/books")
