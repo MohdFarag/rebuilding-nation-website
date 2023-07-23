@@ -47,7 +47,7 @@ def init_db_command():
     init_db()
     click.echo('Initialized the database.')
 
-
+# Registering with the Application
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
@@ -67,7 +67,7 @@ def retrieve_tables(mycursor, *args) :
     ## TODO::AUTOMATIC select to tables
     AllTables = dict()
     if "*" in args:
-        args = ["settings", "article", "book"]
+        args = ["settings", "article", "book", "presentation"]
 
     for arg in args:
         AllTables[arg] = getTableData(mycursor, arg)
