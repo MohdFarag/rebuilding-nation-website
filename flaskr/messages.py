@@ -11,14 +11,23 @@ password_updated_failed = "عذراً، لم يتم تحديث كلمة المر
 book_added_success = "تم إضافة الكتاب بنجاح."
 book_added_failed = "عذراً، لم يتم إضافة الكتاب بنجاح."
 
-article_added_success = "تم إضافة المقال بنجاح."
-article_added_failed = "عذراً لم يتم إضافة المقال بنجاح."
-
 book_edited_success = "تم تعديل الكتاب."
 book_edited_failed = "عذراً، لم يتم تعديل بيانات الكتاب بنجاح."
 
 book_deleted_success = "تم حذف الكتاب بنجاح."
 book_deleted_failed = "عذراً، لم يتم حذف الكتاب بنجاح."
 
+article_added_success = "تم إضافة المقال بنجاح."
+article_added_failed = "عذراً لم يتم إضافة المقال بنجاح."
+
 article_edited_success = "تم تعديل المقال بنجاح."
 article_edited_failed = "عذراً لم يتم تعديل المقال بنجاح."
+
+presentation_added_success = "تم إضافة العرض التقديمي بنجاح."
+presentation_added_failed = "عذراً لم يتم إضافة العرض التقديمي بنجاح."
+
+presentation_edited_success = "تم تعديل العرض التقديمي بنجاح."
+presentation_edited_failed = "عذراً لم يتم تعديل العرض التقديمي بنجاح."
+
+presentation_deleted_success = "تم حذف العرض التقديمي بنجاح."
+presentation_deleted_failed = "عذراً لم يتم حذف العرض التقديمي بنجاح."

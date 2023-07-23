@@ -11,6 +11,7 @@
                     <li class="list-group-item list-group-item-action {%if title=='لوحة التحكم' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.home') }}">الإعدادات</a></li> <!-- aria-current="true" -->
                     <li class="list-group-item list-group-item-action {%if title=='تغيير كلمة المرور' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.changePassword') }}">تغيير كلمة المرور</a></li> <!-- aria-current="true" -->
                     <li class="list-group-item list-group-item-action {%if title=='قائمة الكتب' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.adminBooks') }}">الكتب</a></li>
+                    <li class="list-group-item list-group-item-action {%if title=='قائمة العروض التقديمية' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.adminPresentations') }}">العروض التقديمية</a></li>
                     <li class="list-group-item list-group-item-action {%if title=='قائمة المقالات' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.adminArticles') }}">المقالات</a></li>
                 </ul>
             </div>

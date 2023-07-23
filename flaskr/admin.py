@@ -360,6 +360,185 @@ def editBookLink():
                 settings=settings[0],
                 book=book)
 
+# ======================================================================== #
+
+# Admin | List of Presentation Page
+@bp_admin.route("/presentations")
+@login_required
+def adminPresentations():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    myCursor.execute("SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, category, `created_at` FROM presentation Order by created_at DESC")
+    presentations = myCursor.fetchall()
+
+    return render_template("admin/presentations.html",
+                  name=settings[0][1],
+                  title="قائمة العروض التقديمية",
+                  settings=settings[0],
+                  presentations=presentations)
+
+# Admin | Add Presentation Page
+@bp_admin.route("/addPresentations", methods=['GET', 'POST'])
+@login_required
+def addPresentation():     
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+   
+    if request.method == 'POST':
+        try:
+            name  = get_request_from_form('name')
+            description  = get_request_from_form('description')
+            image  = get_request_from_file('image')
+            image_path = saveFile(image, name, IMAGE) 
+            link  = get_request_from_file('link')
+            link_path = saveFile(link, name, DOCUMENT)
+            category = get_request_from_form('category')
+            createdAt = pd.to_datetime("today")
+            createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
+        
+            myCursor.execute("""INSERT INTO presentation(name, description, img, link, category, created_at) VALUES (%s,%s,%s,%s,%s)""",
+                                                (name, description, image_path, link_path, category, createdAt))
+
+            mydb.commit() # Work Is DONE
+            flash(presentation_added_success, "success")
+            
+        except Exception as err:
+            flash(presentation_added_failed, "danger")
+            flash(err, "reasons")
+
+    return render_template("admin/add-presentation.html",
+                    name=settings[0][1],
+                    title="إضافة عرض تقديمي",
+                    settings=settings[0])
+
+# Admin | Remove Presentation Page
+@bp_admin.route("/RemovePresentations", methods=['GET', 'POST'])
+@login_required
+def removePresentation():
+    mydb, myCursor = mysql_connector()
+
+    id = argsGet("id")
+    try:
+        myCursor.execute("""SELECT `name` FROM presentation WHERE id=%s""",(id,))
+        presentation_name = myCursor.fetchone()
+        rmtree(UPLOAD_FOLDER + presentation_name[0] + "/")
+        flash(presentation_deleted_success, "success")
+    except Exception as err:
+        flash(presentation_deleted_failed, "danger")
+        flash(err, "reasons")
+    
+    myCursor.execute("""DELETE FROM presentation WHERE id=%s""",(id,))
+    mydb.commit() # Work Is DONE
+
+    return redirect(url_for('admin.adminPresentations'))
+
+# Admin | Edit Presentation Page
+@bp_admin.route("/EditPresentation", methods=['GET', 'POST'])
+@login_required
+def editPresentation():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    id = argsGet("id")
+    myCursor.execute(f"""SELECT * FROM Presentation WHERE id={id}""")
+    presentation = myCursor.fetchone()
+
+    if request.method == 'POST':
+        try:
+            name  = get_request_from_form('name')
+            description  = get_request_from_form('description')
+
+            myCursor.execute(f"""UPDATE Presentation SET name='{name}', description='{description}' WHERE id={id}""")
+            mydb.commit()
+            
+            flash(presentation_edited_success, "success")
+            
+        except Exception as err:
+            flash(presentation_edited_failed, "danger")
+            flash(err, "reasons")
+
+    return render_template("admin/edit-presentation.html",
+                name=settings[0][1],
+                title="تعديل كتاب",
+                settings=settings[0],
+                presentation=presentation)
+
+# Admin | Edit Presentation Page
+@bp_admin.route("/EditPresentationImage", methods=['GET', 'POST'])
+@login_required
+def editPresentationImage():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    id = argsGet("id")
+    myCursor.execute(f"""SELECT * FROM presentation WHERE id={id}""")
+    presentation = myCursor.fetchone()
+
+    if request.method == 'POST':
+        try:           
+            name = presentation[1]
+            image  = get_request_from_file('image')
+            image_path = saveFile(image, name, IMAGE)
+            
+            myCursor.execute(f"""UPDATE presentation SET img='{image_path}' WHERE id={id}""")
+            mydb.commit()
+            
+            flash(presentation_edited_success, "success")
+            
+        except Exception as err:
+            flash(presentation_edited_failed, "danger")
+            flash(err, "reasons")
+
+    return render_template("admin/edit-presentation-image.html",
+                name=settings[0][1],
+                title="تعديل صورة العرض التقديمي",
+                settings=settings[0],
+                presentation=presentation)
+
+# Admin | Edit Presentation Page
+@bp_admin.route("/EditPresentationLink", methods=['GET', 'POST'])
+@login_required
+def editPresentationLink():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    id = argsGet("id")
+    myCursor.execute(f"""SELECT * FROM presentation WHERE id={id}""")
+    presentation = myCursor.fetchone()
+
+    if request.method == 'POST':
+        try:
+            name = presentation[1]
+            link  = get_request_from_file('link')
+            link_path = saveFile(link, name, DOCUMENT) 
+            
+            myCursor.execute(f"""UPDATE presentation SET link='{link_path}' WHERE id={id}""")
+            mydb.commit()
+            
+            flash(presentation_edited_success, "success")
+            
+        except Exception as err:
+            flash(presentation_edited_failed, "danger")
+            flash(err, "reasons")
+
+    return render_template("admin/edit-presentation-link.html",
+                name=settings[0][1],
+                title="تعديل العرض التقديمي",
+                settings=settings[0],
+                presentation=presentation)
+
+# ======================================================================== #
 
 # Admin | List of Articles Page
 @bp_admin.route("/articles")
