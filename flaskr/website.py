@@ -52,11 +52,11 @@ def home():
     settings = db_tables['settings']
 
     number_of_books = 6
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`description`,100), `img`, `link`, `created_at` FROM book Order by created_at DESC LIMIT {number_of_books}")
+    myCursor.execute(f"SELECT `id`,`name`,LEFT(`description`,100), `img`, `link`, category, `created_at` FROM book Order by created_at DESC LIMIT {number_of_books}")
     books = myCursor.fetchall()
     
     number_of_articles = 3
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), `created_at` FROM article Order by created_at DESC LIMIT {number_of_articles}")
+    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), category, `created_at` FROM article Order by created_at DESC LIMIT {number_of_articles}")
     articles = myCursor.fetchall()
 
     return render_template("index.html",
@@ -74,7 +74,7 @@ def books():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
-    myCursor.execute(f"SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `created_at` FROM book Order by created_at DESC")
+    myCursor.execute(f"SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM book Order by created_at DESC")
     books = myCursor.fetchall()
 
     return render_template("books.html",
@@ -112,7 +112,7 @@ def articles():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), `created_at` FROM article Order by created_at DESC")
+    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), category, `created_at` FROM article Order by created_at DESC")
     articles = myCursor.fetchall()
 
     return render_template("articles.html",
@@ -153,7 +153,7 @@ def videos():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), `created_at` FROM article Order by created_at DESC")
+    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), link, category, `created_at` FROM videos Order by created_at DESC")
     videos = myCursor.fetchall()
 
     return render_template("videos.html",
@@ -171,10 +171,10 @@ def video():
     settings = db_tables['settings']
   
     video_id = argsGet("id")
-    myCursor.execute(f"SELECT * FROM book WHERE id={video_id}")
+    myCursor.execute(f"SELECT * FROM video WHERE id={video_id}")
     video =myCursor.fetchone()
     
-    return render_template("book.html",
+    return render_template("video.html",
                     title=video[1],
                     name=settings[0][1],
                     video=video)
@@ -188,7 +188,7 @@ def presentations():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
-    myCursor.execute(f"SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `created_at` FROM book Order by created_at DESC")
+    myCursor.execute(f"SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM presentation Order by created_at DESC")
     presentations = myCursor.fetchall()
 
     return render_template("presentations.html",
@@ -205,8 +205,8 @@ def presentation():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
   
-    book_id = argsGet("id")
-    myCursor.execute(f"SELECT * FROM book WHERE id={book_id}")
+    presentation_id = argsGet("id")
+    myCursor.execute(f"SELECT * FROM presentation WHERE id={presentation_id}")
     presentation =myCursor.fetchone()
     
     paras = presentation[2].split('\n')

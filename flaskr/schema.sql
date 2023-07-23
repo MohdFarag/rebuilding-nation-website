@@ -8,6 +8,7 @@ USE `rebuild_notion`;
 -- Drops
 DROP TABLE IF EXISTS `article`;
 DROP TABLE IF EXISTS `book`;
+DROP TABLE IF EXISTS `presentation`;
 DROP TABLE IF EXISTS `settings`;
 
 -- Article
@@ -28,11 +29,24 @@ CREATE TABLE `book` (
   `description` longtext DEFAULT NULL,
   `img` longtext DEFAULT NULL,
   `link` longtext DEFAULT NULL,
+  `category` varchar(150) DEFAULT NULL,
   `created_at` date,
   
   PRIMARY KEY (`id`)
 );
 
+-- Presentation
+CREATE TABLE `presentation` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `img` longtext DEFAULT NULL,
+  `link` longtext DEFAULT NULL,
+  `category` varchar(150) DEFAULT NULL,
+  `created_at` date,
+  
+  PRIMARY KEY (`id`)
+);
 
 -- Settings
 CREATE TABLE `settings` (
