@@ -59,10 +59,20 @@ def home():
     myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), `category`, `created_at` FROM article Order by created_at DESC LIMIT {number_of_articles}")
     articles = myCursor.fetchall()
 
+    number_of_presentations = 6
+    myCursor.execute(f"SELECT `id`,`name`,LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM presentation Order by created_at DESC LIMIT {number_of_presentations}")
+    presentations = myCursor.fetchall()
+
+    number_of_videos = 6
+    myCursor.execute(f"SELECT `id`,`name`,LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM video Order by created_at DESC LIMIT {number_of_videos}")
+    videos = myCursor.fetchall()
+
     return render_template("index.html",
                     name=settings[0][1],
                     coverTitle=settings[0][2],
                     books=books,
+                    presentations=presentations,
+                    videos=videos,
                     articles=articles,
                     title="الصفحة الرئيسية")
 
