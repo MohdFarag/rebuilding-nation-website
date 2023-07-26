@@ -8,26 +8,17 @@ settings_updated_failed = " عذراً، لم يتم تحديث البيانات
 password_updated_success = "تم تحديث كلمة المرور بنجاح."
 password_updated_failed = "عذراً، لم يتم تحديث كلمة المرور ينجاح"
 
-book_added_success = "تم إضافة الكتاب بنجاح."
-book_added_failed = "عذراً، لم يتم إضافة الكتاب بنجاح."
-
-book_edited_success = "تم تعديل الكتاب."
-book_edited_failed = "عذراً، لم يتم تعديل بيانات الكتاب بنجاح."
-
-book_deleted_success = "تم حذف الكتاب بنجاح."
-book_deleted_failed = "عذراً، لم يتم حذف الكتاب بنجاح."
-
 article_added_success = "تم إضافة المقال بنجاح."
 article_added_failed = "عذراً لم يتم إضافة المقال بنجاح."
 
 article_edited_success = "تم تعديل المقال بنجاح."
 article_edited_failed = "عذراً لم يتم تعديل المقال بنجاح."
 
-presentation_added_success = "تم إضافة العرض التقديمي بنجاح."
-presentation_added_failed = "عذراً لم يتم إضافة العرض التقديمي بنجاح."
+item_added_success = "تمت الإضافة بنجاح"
+item_added_failed = "عذراً لم يتم الإضافة بنجاح"
 
-presentation_edited_success = "تم تعديل العرض التقديمي بنجاح."
-presentation_edited_failed = "عذراً لم يتم تعديل العرض التقديمي بنجاح."
+item_edited_success = "تم التعديل بنجاح"
+item_edited_failed = "عذراً لم يتم التعديل ينجاح"
 
-presentation_deleted_success = "تم حذف العرض التقديمي بنجاح."
-presentation_deleted_failed = "عذراً لم يتم حذف العرض التقديمي بنجاح."
+item_deleted_success = "تم الحذف بنجاح"
+item_deleted_failed = "عذراً لم يتم الحذف بنجاح"

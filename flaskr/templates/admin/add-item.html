@@ -4,22 +4,27 @@
 <form enctype="multipart/form-data" action="" method="post" class="CairoPlay">
     <div class="form-floating">
         <input type="text" class="form-control mb-3" id="name" name="name" placeholder="إسم الموقع">
-        <label for="name">إسم الكتاب</label>
+        <label for="name">إسم {{title}}</label>
     </div>
 
     <div class="form-floating">
-        <textarea style="min-height: 100px" type="text" class="form-control mb-3" id="description" name="description" placeholder="وصف الكتاب"></textarea>
-        <label for="description">وصف الكتاب</label>
+        <textarea style="min-height: 100px" type="text" class="form-control mb-3" id="description" name="description" placeholder="وصف {{title}}"></textarea>
+        <label for="description">وصف {{title}}</label>
     </div>
 
     <div>
-        <label for="image">صورة الكتاب</label>
+        <label for="image">صورة {{title}}</label>
         <input type="file" class="form-control mb-3" id="image" name="image">
     </div>
 
     <div>
-        <label for="link">رابط الكتاب</label>
+        <label for="link">رابط {{title}}</label>
         <input type="file" class="form-control mb-3" id="link" name="link">
+    </div>
+
+    <div>
+        <label for="category">التصنيف</label>
+        <input type="text" class="form-control mb-3" id="category" name="category">
     </div>
 
     <input class="btn btn-dark float-end" type="submit" value="إضافة">

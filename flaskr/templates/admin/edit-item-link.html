@@ -3,14 +3,14 @@
 
 <form enctype="multipart/form-data" action="" method="post" class="CairoPlay row g-3">
     <div>
-        <label for="link">رابط الكتاب</label>
+        <label for="link">رابط {{title}}</label>
         <div>
             <input type="file" class="mb-5" id="link" name="link">
             <input value="تعديل" id="enable-link" type="submit" class="btn btn-dark"/>
         </div>
 
-        <div id="book1"></div>
-        <script>PDFObject.embed("../{{book[4]}}", "#book1");</script>
+        <div id="item1"></div>
+        <script>PDFObject.embed("../{{item[4]}}", "#item1");</script>
 
     </div>
 </form>

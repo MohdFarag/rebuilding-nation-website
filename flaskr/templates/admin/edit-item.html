@@ -1,0 +1,25 @@
+{% extends 'admin/base-control.html' %}
+{% block control %}
+
+<form enctype="multipart/form-data" action="" method="post" class="CairoPlay row g-3">
+    <div class="form-floating">
+        <input type="text" class="form-control mb-3" id="name" name="name" placeholder="إسم الموقع" value="{{item[0]}}">
+        <label for="name">اسم {{title}}</label>
+    </div>
+
+    <div class="form-floating">
+        <textarea style="min-height: 100px" class="form-control mb-3" id="description" name="description" placeholder="عنوان الغلاف">{{item[1]|safe}}</textarea>
+        <label for="description">وصف {{title}}</label>
+    </div>
+
+    <div class="form-floating">
+        <input type="text" class="form-control mb-3" id="category" name="category" value="{{item[2]}}">
+        <label for="link">التصنيف</label>
+    </div>
+
+    
+    <input class="btn btn-dark float-end" type="submit" value="تعديل">
+</form>
+
+
+{% endblock %}

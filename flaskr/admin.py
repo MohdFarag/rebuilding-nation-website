@@ -30,14 +30,21 @@ ALLOWED_EXTENSIONS_DOC = set(['pdf'])
 ALLOWED_EXTENSIONS_IMG = set(['png', 'jpg', 'jpeg'])
 ALLOWED_EXTENSIONS_PP = set(['pptx','ppt'])
 ALLOWED_EXTENSIONS_VID = set(['mp4','webm','mkv','flv'])
-#--------------------------------------------------------------------------#
+
+# ======================================================================== #
 
 DOCUMENT   = "doc"
 VIDEO      = "vid"
 POWERPOINT = "pp"
 IMAGE      = "img"
 
-#--------------------------------------------------------------------------#
+PAGES = ["book", "presentation", "video"]
+SINGULAR_TITLES = ["الكتاب", "العرض التقديمي", "مقطع الفيديو"]
+PLURAL_TITLES = ["قائمة الكتب", "قائمة العروض التقديمية", "قائمة مقاطع الفيديو"]
+FILE_TYPES = [DOCUMENT, POWERPOINT, VIDEO, IMAGE]
+
+# ======================================================================== #
+
 """Functions"""
 # Get Request from arguments
 def argsGet(argName):
@@ -62,6 +69,16 @@ def get_request_from_file(input):
         raise Exception("بيانات غير مكتملة")
 
     return file
+
+def set_title(input, singular):
+    for i, page in zip(range(len(PAGES)),PAGES):
+        if input == page:
+            if singular:
+                title = SINGULAR_TITLES[i]
+            else:
+                title = PLURAL_TITLES[i]
+            
+    return title
 
 
 # Check Extension of file
@@ -98,8 +115,7 @@ def saveFile(list, id, fileExt=DOCUMENT):
     else:
       return ""
 
-#--------------------------------------------------------------------------#
-
+# ======================================================================== #
 
 # Home
 @bp_admin.route("/")
@@ -185,30 +201,39 @@ def changePassword():
                   settings=settings[0],
                   show_old_password=show_old_password)
 
-# Admin | List of Books Page
-@bp_admin.route("/books")
+#--------------------------------------------------------------------------#
+
+# Admin | List of item Page
+@bp_admin.route("/listOfItems")
 @login_required
-def adminBooks():
+def listOfItems():
+    itemName = argsGet("name")
+    title_main = set_title(itemName, 0)
+    title = set_title(itemName, 1)
+    
     mydb, myCursor = mysql_connector()
     
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
-    myCursor.execute("SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `created_at` FROM book Order by created_at DESC")
-    books = myCursor.fetchall()
+    myCursor.execute(f"SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, category, `created_at` FROM {itemName} Order by created_at DESC")
+    items = myCursor.fetchall()
 
-    return render_template("admin/books.html",
+    return render_template("admin/items.html",
                   name=settings[0][1],
-                  title="قائمة الكتب",
+                  itemName=itemName,
+                  title=title,
                   settings=settings[0],
-                  books=books)
+                  items=items)
 
-# Admin | Add Book Page
-@bp_admin.route("/addBook", methods=['GET', 'POST'])
+# Admin | Add item Page
+@bp_admin.route("/addItem", methods=['GET', 'POST'])
 @login_required
-def addBook():     
-    mydb, myCursor = mysql_connector()
-    
+def addItem():
+    itemName = argsGet("name")
+    title = set_title(itemName, 1)
+
+    mydb, myCursor = mysql_connector() 
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
    
@@ -216,327 +241,166 @@ def addBook():
         try:
             name  = get_request_from_form('name')
             description  = get_request_from_form('description')
-            image  = get_request_from_file('image')
-            image_path = saveFile(image, name, IMAGE) 
-            link  = get_request_from_file('link')
-            link_path = saveFile(link, name, DOCUMENT)
-            createdAt = pd.to_datetime("today")
-            createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
-        
-            myCursor.execute("""INSERT INTO book(name, description, img, link, created_at) VALUES (%s,%s,%s,%s,%s)""",
-                                                (name, description, image_path, link_path, createdAt))
-
-            mydb.commit() # Work Is DONE
-            flash(book_added_success, "success")
-            
-        except Exception as err:
-            flash(book_added_failed, "danger")
-            flash(err, "reasons")
-
-    return render_template("admin/add-book.html",
-                    name=settings[0][1],
-                    title="إضافة كتاب",
-                    settings=settings[0])
-
-# Admin | Remove Book Page
-@bp_admin.route("/RemoveBook", methods=['GET', 'POST'])
-@login_required
-def removeBook():
-    mydb, myCursor = mysql_connector()
-
-    id = argsGet("id")
-    try:
-        myCursor.execute("""SELECT `name` FROM book WHERE id=%s""",(id,))
-        book_name = myCursor.fetchone()
-        rmtree(UPLOAD_FOLDER + book_name[0] + "/")
-        flash(book_deleted_success, "success")
-    except Exception as err:
-        flash(book_deleted_failed, "danger")
-        flash(err, "reasons")
-    
-    myCursor.execute("""DELETE FROM book WHERE id=%s""",(id,))
-    mydb.commit() # Work Is DONE
-
-    return redirect(url_for('admin.adminBooks'))
-
-# Admin | Edit Book Page
-@bp_admin.route("/EditBook", methods=['GET', 'POST'])
-@login_required
-def editBook():
-    mydb, myCursor = mysql_connector()
-    
-    db_tables = retrieve_tables(myCursor, "*")
-    settings = db_tables['settings']
-
-    id = argsGet("id")
-    myCursor.execute(f"""SELECT * FROM book WHERE id={id}""")
-    book = myCursor.fetchone()
-
-    if request.method == 'POST':
-        try:
-            name  = get_request_from_form('name')
-            description  = get_request_from_form('description')
-
-            myCursor.execute(f"""UPDATE book SET name='{name}', description='{description}' WHERE id={id}""")
-            mydb.commit()
-            
-            flash(book_edited_success, "success")
-            
-        except Exception as err:
-            flash(book_edited_failed, "danger")
-            flash(err, "reasons")
-
-    return render_template("admin/edit-book.html",
-                name=settings[0][1],
-                title="تعديل كتاب",
-                settings=settings[0],
-                book=book)
-
-# Admin | Edit Book Page
-@bp_admin.route("/EditBookImage", methods=['GET', 'POST'])
-@login_required
-def editBookImage():
-    mydb, myCursor = mysql_connector()
-    
-    db_tables = retrieve_tables(myCursor, "*")
-    settings = db_tables['settings']
-
-    id = argsGet("id")
-    myCursor.execute(f"""SELECT * FROM book WHERE id={id}""")
-    book = myCursor.fetchone()
-
-    if request.method == 'POST':
-        try:           
-            name = book[1]
             image  = get_request_from_file('image')
             image_path = saveFile(image, name, IMAGE)
-            
-            myCursor.execute(f"""UPDATE book SET img='{image_path}' WHERE id={id}""")
-            mydb.commit()
-            
-            flash(book_edited_success, "success")
-            
-        except Exception as err:
-            flash(book_edited_failed, "danger")
-            flash(err, "reasons")
-
-    return render_template("admin/edit-book-image.html",
-                name=settings[0][1],
-                title="تعديل صورة الكتاب",
-                settings=settings[0],
-                book=book)
-
-# Admin | Edit Book Page
-@bp_admin.route("/EditBookLink", methods=['GET', 'POST'])
-@login_required
-def editBookLink():
-    mydb, myCursor = mysql_connector()
-    
-    db_tables = retrieve_tables(myCursor, "*")
-    settings = db_tables['settings']
-
-    id = argsGet("id")
-    myCursor.execute(f"""SELECT * FROM book WHERE id={id}""")
-    book = myCursor.fetchone()
-
-    if request.method == 'POST':
-        try:
-            name = book[1]
             link  = get_request_from_file('link')
-            link_path = saveFile(link, name, DOCUMENT) 
-            
-            myCursor.execute(f"""UPDATE book SET link='{link_path}' WHERE id={id}""")
-            mydb.commit()
-            
-            flash(book_edited_success, "success")
-            
-        except Exception as err:
-            flash(book_edited_failed, "danger")
-            flash(err, "reasons")
-
-    return render_template("admin/edit-book-link.html",
-                name=settings[0][1],
-                title="تعديل الكتاب",
-                settings=settings[0],
-                book=book)
-
-# ======================================================================== #
-
-# Admin | List of Presentation Page
-@bp_admin.route("/presentations")
-@login_required
-def adminPresentations():
-    mydb, myCursor = mysql_connector()
-    
-    db_tables = retrieve_tables(myCursor, "*")
-    settings = db_tables['settings']
-
-    myCursor.execute("SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, category, `created_at` FROM presentation Order by created_at DESC")
-    presentations = myCursor.fetchall()
-
-    return render_template("admin/presentations.html",
-                  name=settings[0][1],
-                  title="قائمة العروض التقديمية",
-                  settings=settings[0],
-                  presentations=presentations)
-
-# Admin | Add Presentation Page
-@bp_admin.route("/addPresentations", methods=['GET', 'POST'])
-@login_required
-def addPresentation():     
-    mydb, myCursor = mysql_connector()
-    
-    db_tables = retrieve_tables(myCursor, "*")
-    settings = db_tables['settings']
-   
-    if request.method == 'POST':
-        try:
-            name  = get_request_from_form('name')
-            description  = get_request_from_form('description')
-            image  = get_request_from_file('image')
-            image_path = saveFile(image, name, IMAGE) 
-            link  = get_request_from_file('link')
-            link_path = saveFile(link, name, DOCUMENT)
+            print(FILE_TYPES[PAGES.index(itemName)])
+            link_path = saveFile(link, name, FILE_TYPES[PAGES.index(itemName)])
             category = get_request_from_form('category')
             createdAt = pd.to_datetime("today")
-            createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
-        
-            myCursor.execute("""INSERT INTO presentation(name, description, img, link, category, created_at) VALUES (%s,%s,%s,%s,%s)""",
+            createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"        
+            myCursor.execute(f"""INSERT INTO {itemName}(name, description, img, link, category, created_at) VALUES (%s,%s,%s,%s,%s,%s)""",
                                                 (name, description, image_path, link_path, category, createdAt))
 
             mydb.commit() # Work Is DONE
-            flash(presentation_added_success, "success")
+            flash(item_added_success, "success")
             
         except Exception as err:
-            flash(presentation_added_failed, "danger")
+            print(err)
+            flash(item_added_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/add-presentation.html",
+    return render_template("admin/add-item.html",
                     name=settings[0][1],
-                    title="إضافة عرض تقديمي",
+                    title=f"{title}",
                     settings=settings[0])
 
-# Admin | Remove Presentation Page
-@bp_admin.route("/RemovePresentations", methods=['GET', 'POST'])
+# Admin | Remove Item Page
+@bp_admin.route("/RemoveItem", methods=['GET', 'POST'])
 @login_required
-def removePresentation():
+def removeItem():
     mydb, myCursor = mysql_connector()
 
     id = argsGet("id")
+    itemName = argsGet("name")
+
     try:
-        myCursor.execute("""SELECT `name` FROM presentation WHERE id=%s""",(id,))
-        presentation_name = myCursor.fetchone()
-        rmtree(UPLOAD_FOLDER + presentation_name[0] + "/")
-        flash(presentation_deleted_success, "success")
+        myCursor.execute(f"""SELECT `name` FROM {itemName} WHERE id=%s""",(id,))
+        item_name = myCursor.fetchone()
+        rmtree(UPLOAD_FOLDER + item_name[0] + "/")
+        flash(item_deleted_success, "success")
     except Exception as err:
-        flash(presentation_deleted_failed, "danger")
+        flash(item_deleted_failed, "danger")
         flash(err, "reasons")
     
-    myCursor.execute("""DELETE FROM presentation WHERE id=%s""",(id,))
+    myCursor.execute(f"DELETE FROM {itemName} WHERE id={id}")
     mydb.commit() # Work Is DONE
 
-    return redirect(url_for('admin.adminPresentations'))
+    return redirect(f"listOfItems?name={itemName}")
 
-# Admin | Edit Presentation Page
-@bp_admin.route("/EditPresentation", methods=['GET', 'POST'])
+# Admin | Edit Items Page
+@bp_admin.route("/EditItem", methods=['GET', 'POST'])
 @login_required
-def editPresentation():
+def editItem():
     mydb, myCursor = mysql_connector()
     
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
+    itemName = argsGet("name")
+    title = set_title(itemName, 1)
+    
     id = argsGet("id")
-    myCursor.execute(f"""SELECT * FROM Presentation WHERE id={id}""")
-    presentation = myCursor.fetchone()
+    
+    myCursor.execute(f"""SELECT name,description,category FROM {itemName} WHERE id={id}""")
+    item = myCursor.fetchone()
 
     if request.method == 'POST':
         try:
             name  = get_request_from_form('name')
-            description  = get_request_from_form('description')
+            description  = get_request_from_form('category')
+            category  = get_request_from_form('description')
 
-            myCursor.execute(f"""UPDATE Presentation SET name='{name}', description='{description}' WHERE id={id}""")
+            myCursor.execute(f"""UPDATE {itemName} SET name='{name}', description='{description}, category='{category}' WHERE id={id}""")
             mydb.commit()
             
-            flash(presentation_edited_success, "success")
+            flash(item_edited_success, "success")
             
         except Exception as err:
-            flash(presentation_edited_failed, "danger")
+            flash(item_edited_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/edit-presentation.html",
+    return render_template("admin/edit-item.html",
                 name=settings[0][1],
-                title="تعديل كتاب",
+                title=f"{title}",
                 settings=settings[0],
-                presentation=presentation)
+                item=item)
 
-# Admin | Edit Presentation Page
-@bp_admin.route("/EditPresentationImage", methods=['GET', 'POST'])
+# Admin | Edit Items Image
+@bp_admin.route("/EditItemImage", methods=['GET', 'POST'])
 @login_required
-def editPresentationImage():
+def editItemImage():
     mydb, myCursor = mysql_connector()
     
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
     id = argsGet("id")
-    myCursor.execute(f"""SELECT * FROM presentation WHERE id={id}""")
-    presentation = myCursor.fetchone()
+    itemName = argsGet("name") 
+    title = set_title(itemName, 1)
+    
+    myCursor.execute(f"""SELECT * FROM {itemName} WHERE id={id}""")
+    item = myCursor.fetchone()
 
     if request.method == 'POST':
         try:           
-            name = presentation[1]
+            name = item[1]
             image  = get_request_from_file('image')
             image_path = saveFile(image, name, IMAGE)
             
-            myCursor.execute(f"""UPDATE presentation SET img='{image_path}' WHERE id={id}""")
+            myCursor.execute(f"""UPDATE {itemName} SET img='{image_path}' WHERE id={id}""")
             mydb.commit()
             
-            flash(presentation_edited_success, "success")
+            flash(item_edited_success, "success")
             
         except Exception as err:
-            flash(presentation_edited_failed, "danger")
+            flash(item_edited_failed, "danger")
             flash(err, "reasons")
+            
+    print("x")
 
-    return render_template("admin/edit-presentation-image.html",
+    return render_template("admin/edit-item-image.html",
                 name=settings[0][1],
-                title="تعديل صورة العرض التقديمي",
+                title=f"{title}",
                 settings=settings[0],
-                presentation=presentation)
+                item=item)
 
-# Admin | Edit Presentation Page
-@bp_admin.route("/EditPresentationLink", methods=['GET', 'POST'])
+# Admin | Edit Item Page
+@bp_admin.route("/EditItemLink", methods=['GET', 'POST'])
 @login_required
-def editPresentationLink():
+def editItemLink():
     mydb, myCursor = mysql_connector()
     
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
     id = argsGet("id")
-    myCursor.execute(f"""SELECT * FROM presentation WHERE id={id}""")
-    presentation = myCursor.fetchone()
+    itemName = argsGet("name")
+    title = set_title(itemName,1)
+        
+    myCursor.execute(f"""SELECT * FROM {itemName} WHERE id={id}""")
+    item = myCursor.fetchone()
 
     if request.method == 'POST':
         try:
-            name = presentation[1]
+            name = item[1]
             link  = get_request_from_file('link')
-            link_path = saveFile(link, name, DOCUMENT) 
+            link_path = saveFile(link, name, FILE_TYPES[PAGES.index(itemName)]) 
             
-            myCursor.execute(f"""UPDATE presentation SET link='{link_path}' WHERE id={id}""")
+            myCursor.execute(f"""UPDATE {itemName} SET link='{link_path}' WHERE id={id}""")
             mydb.commit()
             
-            flash(presentation_edited_success, "success")
+            flash(item_edited_success, "success")
             
         except Exception as err:
-            flash(presentation_edited_failed, "danger")
+            flash(item_edited_failed, "danger")
             flash(err, "reasons")
 
-    return render_template("admin/edit-presentation-link.html",
+    return render_template("admin/edit-item-link.html",
                 name=settings[0][1],
-                title="تعديل العرض التقديمي",
+                title=f"{title}",
                 settings=settings[0],
-                presentation=presentation)
+                item=item)
 
 # ======================================================================== #
 
@@ -558,7 +422,7 @@ def adminArticles():
                 settings=settings[0],
                 articles=articles)
 
-# Admin | Add Book Page
+# Admin | Add Article Page
 @bp_admin.route("/addArticle", methods=['GET', 'POST'])
 @login_required
 def addArticle():     
