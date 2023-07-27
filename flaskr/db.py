@@ -52,11 +52,16 @@ def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
 
-"""Retrive Database Tables"""
+"""Retrieve Database Tables"""
 def getTableData(mycursor, tableName):
-
-    'Retrieve all table data'
-    mycursor.execute("SELECT * FROM "+ tableName)
+    """Retrieve all table data"""
+    if tableName in ["video", "presentation", "book"]:
+        mycursor.execute("SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM "+ tableName)
+    elif tableName == "article":
+        mycursor.execute("SELECT `id`, `name`, LEFT(`text`,250), `category`, `created_at` FROM "+ tableName)
+    else:
+        mycursor.execute("SELECT * FROM "+ tableName)
+    
     table = mycursor.fetchall()
 
     return table

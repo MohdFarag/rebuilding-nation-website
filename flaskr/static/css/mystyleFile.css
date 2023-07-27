@@ -139,3 +139,14 @@ header:hover {
 .table tfoot{
     font-weight: bold;
 }
+
+.more {
+    background: #a465087a;
+    margin-top: 30px;
+    padding: 5px;
+    color: #303030;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px #444444 solid;
+    font-family: 'Reem Kufi Fun', serif;
+}

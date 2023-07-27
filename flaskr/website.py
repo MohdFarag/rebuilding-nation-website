@@ -36,8 +36,10 @@ def argsGet(argName):
           
 #--------------------------------------------------------------------------#
 
-""" Routes of Pages """
+COL_NAMES_1 = "`id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at`"
+COL_NAMES_2 = "`id`, `name`, LEFT(`text`,250), `category`, `created_at`"
 
+""" Routes of Pages """
 # Home
 @bp_site.route("/")
 def Home():
@@ -51,21 +53,21 @@ def home():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
-    number_of_books = 6
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM book Order by created_at DESC LIMIT {number_of_books}")
+    number_of_books = 4
+    myCursor.execute(f"SELECT {COL_NAMES_1} FROM book Order by created_at DESC LIMIT {number_of_books}")
     books = myCursor.fetchall()
     
-    number_of_articles = 3
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), `category`, `created_at` FROM article Order by created_at DESC LIMIT {number_of_articles}")
-    articles = myCursor.fetchall()
-
-    number_of_presentations = 6
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM presentation Order by created_at DESC LIMIT {number_of_presentations}")
+    number_of_presentations = 4
+    myCursor.execute(f"SELECT {COL_NAMES_1} FROM presentation Order by created_at DESC LIMIT {number_of_presentations}")
     presentations = myCursor.fetchall()
 
-    number_of_videos = 6
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM video Order by created_at DESC LIMIT {number_of_videos}")
+    number_of_videos = 4
+    myCursor.execute(f"SELECT {COL_NAMES_1} FROM video Order by created_at DESC LIMIT {number_of_videos}")
     videos = myCursor.fetchall()
+
+    number_of_articles = 3
+    myCursor.execute(f"SELECT {COL_NAMES_2} FROM article Order by created_at DESC LIMIT {number_of_articles}")
+    articles = myCursor.fetchall()
 
     return render_template("index.html",
                     name=settings[0][1],
@@ -81,11 +83,9 @@ def home():
 def books():
     mydb, myCursor = mysql_connector()
     
-    db_tables = retrieve_tables(myCursor, "*")
+    db_tables = retrieve_tables(myCursor, "settings", "book")
     settings = db_tables['settings']
-
-    myCursor.execute(f"SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM book Order by created_at DESC")
-    books = myCursor.fetchall()
+    books = db_tables['book']
 
     return render_template("books.html",
                     name=settings[0][1],
@@ -102,7 +102,7 @@ def book():
     settings = db_tables['settings']
   
     book_id = argsGet("id")
-    myCursor.execute(f"SELECT * FROM book WHERE id={book_id}")
+    myCursor.execute(f"SELECT {COL_NAMES_1} FROM book WHERE id={book_id}")
     bookData =myCursor.fetchone()
     
     paras = bookData[2].split('\n')
@@ -113,17 +113,15 @@ def book():
                     bookData=bookData,
                     paras=paras)
 
-
 # Articles Page
 @bp_site.route("/articles")
 def articles():
     _, myCursor = mysql_connector()
     
-    db_tables = retrieve_tables(myCursor, "*")
+    db_tables = retrieve_tables(myCursor, "settings", "article")
+    
     settings = db_tables['settings']
-
-    myCursor.execute(f"SELECT `id`,`name`,LEFT(`text`,250), `category`, `created_at` FROM article Order by created_at DESC")
-    articles = myCursor.fetchall()
+    articles = db_tables['article']
 
     return render_template("articles.html",
                     name=settings[0][1],
@@ -140,8 +138,8 @@ def article():
     settings = db_tables['settings']
   
     article_id = argsGet("id")
-    myCursor.execute(f"SELECT * FROM article WHERE id={article_id}")
-    articleData =myCursor.fetchone()
+    myCursor.execute(f"SELECT {COL_NAMES_2} FROM article WHERE id={article_id}")
+    articleData = myCursor.fetchone()
     
     title = articleData[1]
     articleText = articleData[2]
@@ -160,16 +158,14 @@ def article():
 def videos():
     _, myCursor = mysql_connector()
     
-    db_tables = retrieve_tables(myCursor, "*")
+    db_tables = retrieve_tables(myCursor, "settings", "video")
     settings = db_tables['settings']
-
-    myCursor.execute(f"SELECT `id`,`name`, LEFT(`description`,250), link, `category`, `created_at` FROM video Order by created_at DESC")
-    videos = myCursor.fetchall()
+    videos = db_tables['video']
 
     return render_template("videos.html",
                     name=settings[0][1],
                     coverTitle=settings[0][2],
-                    video=videos,
+                    videos=videos,
                     title="فيديوهات")
 
 # Video Page
@@ -181,7 +177,7 @@ def video():
     settings = db_tables['settings']
   
     video_id = argsGet("id")
-    myCursor.execute(f"SELECT * FROM video WHERE id={video_id}")
+    myCursor.execute(f"SELECT {COL_NAMES_1} FROM video WHERE id={video_id}")
     video =myCursor.fetchone()
     
     return render_template("video.html",
@@ -189,17 +185,14 @@ def video():
                     name=settings[0][1],
                     video=video)
 
-
 # Presentations Page
 @bp_site.route("/presentations")
 def presentations():
     mydb, myCursor = mysql_connector()
     
-    db_tables = retrieve_tables(myCursor, "*")
+    db_tables = retrieve_tables(myCursor, "settings", "presentation")
     settings = db_tables['settings']
-
-    myCursor.execute(f"SELECT `id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at` FROM presentation Order by created_at DESC")
-    presentations = myCursor.fetchall()
+    presentations = db_tables['presentation']
 
     return render_template("presentations.html",
                     name=settings[0][1],
@@ -216,7 +209,7 @@ def presentation():
     settings = db_tables['settings']
   
     presentation_id = argsGet("id")
-    myCursor.execute(f"SELECT * FROM presentation WHERE id={presentation_id}")
+    myCursor.execute(f"SELECT {COL_NAMES_1} FROM presentation WHERE id={presentation_id}")
     presentation =myCursor.fetchone()
     
     paras = presentation[2].split('\n')

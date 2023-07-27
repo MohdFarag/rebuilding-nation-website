@@ -50,6 +50,11 @@
                     </div>                       
                     {% endfor %}            
                 </div>
+                {% if books|length > 4 %}
+                <div class="more">
+                    <h3>المزيد ...</h3>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -92,15 +97,69 @@
                             </div>
                         </div>
                     </div>                       
+                    {% endfor %}
+                </div>
+                {% if books|length > 4 %}
+                <div class="more">
+                    <h3>المزيد ...</h3>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Videos section-->
+<section id="books">
+    <div class="container px-4">
+        <div class="row gx-4 justify-content-center">
+            <div class="col-lg-12">
+                <h2 class="CairoPlay mb-4">مقاطع الفيديو</h2>
+                <div class="row row-cols-md-4 g-4">
+                    {% if videos|length == 0 %}
+                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                        <div class="card CairoPlay">
+                            <div class="card-body">
+                                <center> لا يوجد مقاطع فيديو </center>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% for video in videos %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mt-3">
+                        <div class="card CairoPlay">
+                            <div class=" image-container">
+                                <img onerror='handleImageError("{{video[1]}}")' src="{{video[3]}}" class="card-img-top h-25" alt="العنوان">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title fw-bolder reemKufi h3">{{video[1]}}</h5>
+                                <p class="card-text">
+                                {{video[2]}}
+                                </p>
+                                <center>
+                                    <a href="{{ video[4] }}" class="text-center card-link">تحميل</a>
+                                    <a href="/video?id={{video[0]}}" class="text-center card-link">معاينة</a>
+                                </center>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">تم النشر {{video[6]}}</small>
+                            </div>
+                        </div>
+                    </div>                       
                     {% endfor %}            
                 </div>
+                {% if books|length > 4 %}
+                <div class="more">
+                    <h3>المزيد ...</h3>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </section>
 
 <!-- Articles section-->
-<section id="articles">
+<section class="bg-light" id="articles">
     <div class="container px-4">
         <div class="row gx-4 justify-content-center">
             <div class="col-lg-12">
@@ -132,51 +191,11 @@
                     </div>         
                     {% endfor %}                        
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Videos section-->
-<section class="bg-light" id="books">
-    <div class="container px-4">
-        <div class="row gx-4 justify-content-center">
-            <div class="col-lg-12">
-                <h2 class="CairoPlay mb-4">مقاطع الفيديو</h2>
-                <div class="row row-cols-md-4 g-4">
-                    {% if videos|length == 0 %}
-                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                        <div class="card CairoPlay">
-                            <div class="card-body">
-                                <center> لا يوجد مقاطع فيديو </center>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% for video in videos %}
-                    <div class="col-lg-3 col-md-4 col-sm-6 mt-3">
-                        <div class="card CairoPlay">
-                            <video width="320" height="240" controls>
-                                <source src="{{url_for('static', filename=file)}}" type="video/mp4">
-                                Error Message
-                            </video>
-                            <div class="card-body">
-                                <h5 class="card-title fw-bolder reemKufi h3">{{video[1]}}</h5>
-                                <p class="card-text">
-                                {{video[2]}}
-                                </p>
-                                <center>
-                                    <a href="{{ video[4] }}" class="text-center card-link">تحميل</a>
-                                    <a href="/video?id={{video[0]}}" class="text-center card-link">معاينة</a>
-                                </center>
-                            </div>
-                            <div class="card-footer">
-                                <small class="text-muted">تم النشر {{video[5]}}</small>
-                            </div>
-                        </div>
-                    </div>                       
-                    {% endfor %}            
+                {% if books|length > 4 %}
+                <div class="more">
+                    <h3>المزيد ...</h3>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
