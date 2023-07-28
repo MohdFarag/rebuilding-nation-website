@@ -50,9 +50,9 @@
                     </div>                       
                     {% endfor %}            
                 </div>
-                {% if books|length > 4 %}
+                {% if books|length == 4%}
                 <div class="more">
-                    <h3>المزيد ...</h3>
+                    <a href="/books"><h3>المزيد ...</h3></a>
                 </div>
                 {% endif %}
             </div>
@@ -93,15 +93,15 @@
                                 </center>
                             </div>
                             <div class="card-footer">
-                                <small class="text-muted">تم النشر {{book[6]}}</small>
+                                <small class="text-muted">تم النشر {{presentation[6]}}</small>
                             </div>
                         </div>
                     </div>                       
                     {% endfor %}
                 </div>
-                {% if books|length > 4 %}
+                {% if presentations|length == 4 %}
                 <div class="more">
-                    <h3>المزيد ...</h3>
+                    <a href="/presentations"><h3>المزيد ...</h3></a>
                 </div>
                 {% endif %}
             </div>
@@ -148,9 +148,9 @@
                     </div>                       
                     {% endfor %}            
                 </div>
-                {% if books|length > 4 %}
+                {% if videos|length == 4%}
                 <div class="more">
-                    <h3>المزيد ...</h3>
+                    <a href="/videos"><h3>المزيد ...</h3></a>
                 </div>
                 {% endif %}
             </div>
@@ -185,15 +185,15 @@
                                 </p> 
                             </div>
                             <div class="card-footer">
-                                <small class="text-muted">تم النشر {{article[3]}}</small>
+                                <small class="text-muted">تم النشر {{article[4]}}</small>
                             </div>
                         </div>
                     </div>         
                     {% endfor %}                        
                 </div>
-                {% if books|length > 4 %}
+                {% if articles|length == 4%}
                 <div class="more">
-                    <h3>المزيد ...</h3>
+                    <a href="/articles"><h3>المزيد ...</h3></a>
                 </div>
                 {% endif %}
             </div>
