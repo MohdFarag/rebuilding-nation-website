@@ -37,8 +37,9 @@ def argsGet(argName):
 #--------------------------------------------------------------------------#
 
 COL_NAMES_1 = "`id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at`"
-COL_NAMES_2 = "`id`, `name`, LEFT(`text`,250), `category`, `created_at`"
-COL_NAMES_3 = "`id`, `name`, `text`, `category`, `created_at`"
+COL_NAMES_2 = "`id`, `name`, `description`, `img`, `link`, `category`, `created_at`"
+COL_NAMES_3 = "`id`, `name`, LEFT(`text`,250), `category`, `created_at`"
+COL_NAMES_4 = "`id`, `name`, `text`, `category`, `created_at`"
 
 """ Routes of Pages """
 # Home
@@ -67,7 +68,7 @@ def home():
     videos = myCursor.fetchall()
 
     number_of_articles = 3
-    myCursor.execute(f"SELECT {COL_NAMES_2} FROM article Order by created_at DESC LIMIT {number_of_articles}")
+    myCursor.execute(f"SELECT {COL_NAMES_3} FROM article Order by created_at DESC LIMIT {number_of_articles}")
     articles = myCursor.fetchall()
 
     return render_template("index.html",
@@ -103,7 +104,7 @@ def book():
     settings = db_tables['settings']
   
     book_id = argsGet("id")
-    myCursor.execute(f"SELECT {COL_NAMES_1} FROM book WHERE id={book_id}")
+    myCursor.execute(f"SELECT {COL_NAMES_2} FROM book WHERE id={book_id}")
     bookData =myCursor.fetchone()
     
     paras = bookData[2].split('\n')
@@ -139,7 +140,7 @@ def article():
     settings = db_tables['settings']
   
     article_id = argsGet("id")
-    myCursor.execute(f"SELECT {COL_NAMES_3} FROM article WHERE id={article_id}")
+    myCursor.execute(f"SELECT {COL_NAMES_4} FROM article WHERE id={article_id}")
     articleData = myCursor.fetchone()
     
     title = articleData[1]
@@ -178,7 +179,7 @@ def video():
     settings = db_tables['settings']
   
     video_id = argsGet("id")
-    myCursor.execute(f"SELECT {COL_NAMES_1} FROM video WHERE id={video_id}")
+    myCursor.execute(f"SELECT {COL_NAMES_2} FROM video WHERE id={video_id}")
     video =myCursor.fetchone()
     
     return render_template("video.html",
@@ -210,7 +211,7 @@ def presentation():
     settings = db_tables['settings']
   
     presentation_id = argsGet("id")
-    myCursor.execute(f"SELECT {COL_NAMES_1} FROM presentation WHERE id={presentation_id}")
+    myCursor.execute(f"SELECT {COL_NAMES_2} FROM presentation WHERE id={presentation_id}")
     presentation =myCursor.fetchone()
     
     paras = presentation[2].split('\n')
