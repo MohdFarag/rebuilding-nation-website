@@ -38,6 +38,7 @@ def argsGet(argName):
 
 COL_NAMES_1 = "`id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at`"
 COL_NAMES_2 = "`id`, `name`, LEFT(`text`,250), `category`, `created_at`"
+COL_NAMES_3 = "`id`, `name`, `text`, `category`, `created_at`"
 
 """ Routes of Pages """
 # Home
@@ -138,7 +139,7 @@ def article():
     settings = db_tables['settings']
   
     article_id = argsGet("id")
-    myCursor.execute(f"SELECT {COL_NAMES_2} FROM article WHERE id={article_id}")
+    myCursor.execute(f"SELECT {COL_NAMES_3} FROM article WHERE id={article_id}")
     articleData = myCursor.fetchone()
     
     title = articleData[1]
