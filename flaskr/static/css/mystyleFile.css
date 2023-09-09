@@ -130,6 +130,10 @@ header:hover {
   }
 
 
+  .title {
+    font-family: Calibri,Arial,Amiri,sans-serif;
+  }
+
   .article-paragraph{
     text-align: justify;
     font-family: Calibri,Arial,Amiri,sans-serif;
