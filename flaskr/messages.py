@@ -8,12 +8,6 @@ settings_updated_failed = " عذراً، لم يتم تحديث البيانات
 password_updated_success = "تم تحديث كلمة المرور بنجاح."
 password_updated_failed = "عذراً، لم يتم تحديث كلمة المرور ينجاح"
 
-article_added_success = "تم إضافة المقال بنجاح."
-article_added_failed = "عذراً لم يتم إضافة المقال بنجاح."
-
-article_edited_success = "تم تعديل المقال بنجاح."
-article_edited_failed = "عذراً لم يتم تعديل المقال بنجاح."
-
 item_added_success = "تمت الإضافة بنجاح"
 item_added_failed = "عذراً لم يتم الإضافة بنجاح"
 

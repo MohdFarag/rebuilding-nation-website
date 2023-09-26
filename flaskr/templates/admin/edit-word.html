@@ -1,0 +1,15 @@
+{% extends 'admin/base-control.html' %}
+{% block control %}
+
+<form enctype="multipart/form-data" action="" method="post" class="CairoPlay">
+    <div class="form-floating">
+        <input type="text" class="form-control mb-3" id="word" name="word" placeholder="الحكمة" value="{{ word[1] }}">
+        <label for="word">الحكمة</label>
+    </div>
+
+    <input class="btn btn-dark float-end" type="submit" value="تعديل">
+</form>
+
+
+
+{% endblock %}

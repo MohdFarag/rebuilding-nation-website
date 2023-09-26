@@ -59,3 +59,12 @@ CREATE TABLE `settings` (
 );
 
 insert into `settings`(`title`,`cover_text`,`admin_username`,`admin_password`) values ("تَربيَة الأُمةِ مِنْ جَديدٍ","{فَاعْلَمْ أَنَّهُ لَا إِلَٰهَ إِلَّا اللَّهُ}","Admin","12345");
+
+-- Words
+CREATE TABLE `words` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `word` longtext DEFAULT NULL,
+  `created_at` date,
+  
+  PRIMARY KEY (`id`)
+);

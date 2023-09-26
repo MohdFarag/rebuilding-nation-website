@@ -10,6 +10,7 @@
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-action {%if title=='لوحة التحكم' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.home') }}">الإعدادات</a></li> <!-- aria-current="true" -->
                     <li class="list-group-item list-group-item-action {%if title=='تغيير كلمة المرور' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.changePassword') }}">تغيير كلمة المرور</a></li>
+                    <li class="list-group-item list-group-item-action {%if title=='قائمة الحكم' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="{{ url_for('admin.adminWords') }}">الحكم</a></li>
                     <li class="list-group-item list-group-item-action {%if itemName=='book' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="./listOfItems?name=book">الكتب</a></li>
                     <li class="list-group-item list-group-item-action {%if itemName=='presentation' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="./listOfItems?name=presentation">العروض التقديمية</a></li>
                     <li class="list-group-item list-group-item-action {%if itemName=='video' %}list-group-item-warning{%endif%}"><a class="text-decoration-none text-dark" href="./listOfItems?name=video">مقاطع الفيديو</a></li>

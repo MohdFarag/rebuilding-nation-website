@@ -11,6 +11,7 @@ from flaskr.auth import login_required
 from flaskr.db import mysql_connector, retrieve_tables
 from werkzeug.exceptions import HTTPException
 
+import numpy as np
 import pandas as pd
 import math
 
@@ -55,6 +56,18 @@ def home():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
+    myCursor.execute(f"SELECT word FROM word")
+    words = myCursor.fetchall()
+    print(words)
+    length = len(words)
+    index = np.random.randint(0, length)
+    if length > 0:
+        print(index)
+        word = words[index][0]
+        print(word)
+    else:
+        word = ""
+        
     number_of_books = 4
     myCursor.execute(f"SELECT {COL_NAMES_1} FROM book Order by created_at DESC LIMIT {number_of_books}")
     books = myCursor.fetchall()
@@ -74,6 +87,7 @@ def home():
     return render_template("index.html",
                     name=settings[0][1],
                     coverTitle=settings[0][2],
+                    word=word,
                     books=books,
                     presentations=presentations,
                     videos=videos,

@@ -442,10 +442,10 @@ def addArticle():
                                                 (name, text, createdAt))
             mydb.commit() # Work Is DONE
 
-            flash(article_added_success, "success")
+            flash(item_added_success, "success")
             
         except Exception as err:
-            flash(article_added_failed, "danger")
+            flash(item_added_failed, "danger")
             flash(err, "reasons")
 
     return render_template("admin/add-article.html",
@@ -453,7 +453,7 @@ def addArticle():
                   title="إضافة مقال",
                   settings=settings[0])
 
-# Admin | Remove Book Page
+# Admin | Remove Article Page
 @bp_admin.route("/RemoveArticle", methods=['GET', 'POST'])
 @login_required
 def removeArticle():
@@ -465,7 +465,7 @@ def removeArticle():
 
     return redirect(url_for('admin.adminArticles'))
 
-# Admin | Edit Book Page
+# Admin | Edit Article Page
 @bp_admin.route("/EditArticle", methods=['GET', 'POST'])
 @login_required
 def editArticle():
@@ -488,10 +488,10 @@ def editArticle():
             myCursor.execute(f"""UPDATE article SET name='{name}', text='{text}', created_at='{createdAt}' WHERE id={id}""")
             mydb.commit()
 
-            flash(article_edited_success, "success")
+            flash(item_edited_success, "success")
         
         except Exception as err:
-            flash(article_edited_failed, "danger")
+            flash(item_edited_failed, "danger")
             flash(err, "reasons")
 
     return render_template("admin/edit-article.html",
@@ -499,3 +499,87 @@ def editArticle():
                   title="تعديل كتاب",
                   settings=settings[0],
                   article=article)
+
+# ======================================================================== #
+
+# Admin | List of Words Page
+@bp_admin.route("/words", methods=['GET', 'POST'])
+@login_required
+def adminWords():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    myCursor.execute("SELECT `id`, `word`, `created_at` FROM word Order by created_at DESC")
+    words = myCursor.fetchall()
+
+    if request.method == 'POST':
+        try:
+            word = get_request_from_form('word')
+            createdAt = pd.to_datetime("today")
+            createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
+            
+            myCursor.execute("""INSERT INTO word(word, created_at) VALUES (%s,%s)""",
+                                                (word, createdAt))
+            mydb.commit() # Work Is DONE
+
+            flash(item_added_success, "success")
+            
+        except Exception as err:
+            flash(item_added_failed, "danger")
+            flash(err, "reasons")
+
+
+    return render_template("admin/words.html",
+                name=settings[0][1],
+                title="قائمة الحكم",
+                settings=settings[0],
+                words=words)
+
+# Admin | Remove Word Page
+@bp_admin.route("/RemoveWord", methods=['GET', 'POST'])
+@login_required
+def removeWord():
+    mydb, myCursor = mysql_connector()
+
+    id = argsGet("id")
+    myCursor.execute("""DELETE FROM word WHERE id=%s""",(id,))
+    mydb.commit() # Work Is DONE
+
+    return redirect(url_for('admin.adminWords'))
+
+# Admin | Edit Book Page
+@bp_admin.route("/EditWord", methods=['GET', 'POST'])
+@login_required
+def editWord():
+    mydb, myCursor = mysql_connector()
+    
+    db_tables = retrieve_tables(myCursor, "*")
+    settings = db_tables['settings']
+
+    id = argsGet("id")
+    myCursor.execute(f"""SELECT * FROM word WHERE id={id}""")
+    word = myCursor.fetchone()
+
+    if request.method == 'POST':
+        try:
+            word  = get_request_from_form('word')
+            createdAt = pd.to_datetime("today")
+            createdAt = f"{createdAt.year}-{createdAt.month}-{createdAt.day}"
+
+            myCursor.execute(f"""UPDATE word SET word='{word}', created_at='{createdAt}' WHERE id={id}""")
+            mydb.commit()
+
+            flash(item_edited_success, "success")
+        
+        except Exception as err:
+            flash(item_edited_failed, "danger")
+            flash(err, "reasons")
+
+    return render_template("admin/edit-word.html",
+                  name=settings[0][1],
+                  title="تعديل كتاب",
+                  settings=settings[0],
+                  word=word)
+
