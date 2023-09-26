@@ -60,8 +60,8 @@ def home():
     words = myCursor.fetchall()
     print(words)
     length = len(words)
-    index = np.random.randint(0, length)
     if length > 0:
+        index = np.random.randint(0, length)
         print(index)
         word = words[index][0]
         print(word)
