@@ -8,7 +8,7 @@ from flask import (
 from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
-from flaskr.db import mysql_connector, retrieve_tables
+from flaskr.db import mysql_connector, retrieve_tables, getWord
 from werkzeug.exceptions import HTTPException
 
 import numpy as np
@@ -56,18 +56,7 @@ def home():
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
-    myCursor.execute(f"SELECT word FROM word")
-    words = myCursor.fetchall()
-    print(words)
-    length = len(words)
-    if length > 0:
-        index = np.random.randint(0, length)
-        print(index)
-        word = words[index][0]
-        print(word)
-    else:
-        word = ""
-        
+    word = getWord(myCursor)
     number_of_books = 4
     myCursor.execute(f"SELECT {COL_NAMES_1} FROM book Order by created_at DESC LIMIT {number_of_books}")
     books = myCursor.fetchall()
@@ -103,9 +92,11 @@ def books():
     settings = db_tables['settings']
     books = db_tables['book']
 
+    word = getWord(myCursor)
     return render_template("books.html",
                     name=settings[0][1],
                     coverTitle=settings[0][2],
+                    word=word,
                     books=books,
                     title="كتبي")
 
@@ -119,13 +110,16 @@ def book():
   
     book_id = argsGet("id")
     myCursor.execute(f"SELECT {COL_NAMES_2} FROM book WHERE id={book_id}")
-    bookData =myCursor.fetchone()
+    bookData = myCursor.fetchone()
+    
+    word = getWord(myCursor)
     
     paras = bookData[2].split('\n')
     return render_template("book.html",
                     title=bookData[1],
                     name=settings[0][1],
                     coverTitle=settings[0][2],
+                    word=word,
                     bookData=bookData,
                     paras=paras)
 
@@ -138,11 +132,14 @@ def articles():
     
     settings = db_tables['settings']
     articles = db_tables['article']
+    
+    word = getWord(myCursor)
 
     return render_template("articles.html",
                     name=settings[0][1],
                     coverTitle=settings[0][2],
                     articles=articles,
+                    word=word,
                     title="مقالاتي")
 
 # Article Page
@@ -159,13 +156,15 @@ def article():
     
     title = articleData[1]
     articleText = articleData[2]
-
     articleText = articleText.split('\n')
 
+    word = getWord(myCursor)
+    
     return render_template("article.html",
                     name=settings[0][1],
                     coverTitle=settings[0][2],
                     title=title,
+                    word=word,
                     articleText=articleText)
     
 
@@ -178,10 +177,12 @@ def videos():
     settings = db_tables['settings']
     videos = db_tables['video']
 
+    word = getWord(myCursor)
     return render_template("videos.html",
                     name=settings[0][1],
                     coverTitle=settings[0][2],
                     videos=videos,
+                    word=word,
                     title="فيديوهات")
 
 # Video Page
@@ -194,12 +195,15 @@ def video():
   
     video_id = argsGet("id")
     myCursor.execute(f"SELECT {COL_NAMES_2} FROM video WHERE id={video_id}")
-    video =myCursor.fetchone()
+    video = myCursor.fetchone()
+    
+    word = getWord(myCursor)
     
     return render_template("video.html",
                     title=video[1],
                     name=settings[0][1],
-                    video=video)
+                    video=video,
+                    word=word)
 
 # Presentations Page
 @bp_site.route("/presentations")
@@ -210,13 +214,16 @@ def presentations():
     settings = db_tables['settings']
     presentations = db_tables['presentation']
 
+    word = getWord(myCursor)
+    
     return render_template("presentations.html",
                     name=settings[0][1],
                     coverTitle=settings[0][2],
                     presentations=presentations,
+                    word=word,
                     title="العروض التقديمية")
 
-# Book Page
+# Presentation Page
 @bp_site.route("/presentation")
 def presentation():
     mydb, myCursor = mysql_connector()
@@ -228,12 +235,15 @@ def presentation():
     myCursor.execute(f"SELECT {COL_NAMES_2} FROM presentation WHERE id={presentation_id}")
     presentation =myCursor.fetchone()
     
+    word = getWord(myCursor)
+    
     paras = presentation[2].split('\n')
     return render_template("presentation.html",
                     title=presentation[1],
                     name=settings[0][1],
                     coverTitle=settings[0][2],
                     presentation=presentation,
+                    word=word,
                     paras=paras)
 
 #--------------------------------------------------------------------------#

@@ -5,7 +5,7 @@ import click
 from flask import current_app, g
 from flaskr.log import site_logger
 from flaskr.config import DB_CONFIG
-
+import numpy as np
 
 # Connecting with Database
 def mysql_connector():
@@ -51,6 +51,18 @@ def init_db_command():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
+def getWord(myCursor):
+    myCursor.execute(f"SELECT word FROM word")
+    words = myCursor.fetchall()
+    length = len(words)
+    if length > 0:
+        index = np.random.randint(0, length)
+        word = words[index][0]
+    else:
+        word = ""
+
+    return word
 
 """Retrieve Database Tables"""
 def getTableData(mycursor, tableName):
