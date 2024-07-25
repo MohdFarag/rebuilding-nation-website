@@ -32,7 +32,7 @@ def create_app(test_config=None):
         # using a development configuration
         # cfg = import_string('flaskr.config.DevConfig')()
         # app.config.from_object(cfg)
-        
+
         # using a production configuration
         cfg = import_string('flaskr.config.ProdConfig')()
         app.config.from_object(cfg)

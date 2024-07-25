@@ -32,11 +32,11 @@ class Test(Config):
     FLASK_ENV = 'testing'
     TESTING = True
     # DATABASE_URI = environ.get('TEST_DATABASE_URI')
-    
+
 DB_CONFIG = {
-    'user': 'root', 
+    'user': 'root',
     'password': '01140345493',
     'host': '127.0.0.1',
-    'port': '3306', 
+    'port': '3306',
     'database': 'rebuild_notion'
 }
