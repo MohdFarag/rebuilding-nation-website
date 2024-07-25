@@ -18,7 +18,6 @@ import math
 from flaskr.log import site_logger
 from flaskr.config import Config
 
-
 #--------------------------------------------------------------------------#
 
 bp_site = Blueprint('ahmedfrg', __name__)
@@ -32,9 +31,9 @@ def argsGet(argName):
     if request.args.get(argName):
         field = request.args.get(argName)
     else:
-        field = ""  
+        field = ""
     return field
-          
+
 #--------------------------------------------------------------------------#
 
 COL_NAMES_1 = "`id`, `name`, LEFT(`description`,100), `img`, `link`, `category`, `created_at`"
@@ -52,7 +51,7 @@ def Home():
 @bp_site.route("/home")
 def home():
     mydb, myCursor = mysql_connector()
-    
+
     db_tables = retrieve_tables(myCursor, "*")
     settings = db_tables['settings']
 
@@ -60,7 +59,7 @@ def home():
     number_of_books = 4
     myCursor.execute(f"SELECT {COL_NAMES_1} FROM book Order by created_at DESC LIMIT {number_of_books}")
     books = myCursor.fetchall()
-    
+
     number_of_presentations = 4
     myCursor.execute(f"SELECT {COL_NAMES_1} FROM presentation Order by created_at DESC LIMIT {number_of_presentations}")
     presentations = myCursor.fetchall()
