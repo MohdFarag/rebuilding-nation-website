@@ -59,7 +59,3 @@ def create_app(test_config=None):
     app.add_url_rule('/', endpoint='index')
 
     return app
-
-app = create_app()
-port = int(os.environ.get("PORT", 5000))
-app.run(host="0.0.0.0", port=port)
