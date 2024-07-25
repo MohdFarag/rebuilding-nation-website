@@ -1,1 +1,1 @@
-web: gunicorn --factory flaskr:create_app
+web: gunicorn flaskr:app
