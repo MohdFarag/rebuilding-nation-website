@@ -34,9 +34,9 @@ class Test(Config):
     # DATABASE_URI = environ.get('TEST_DATABASE_URI')
 
 DB_CONFIG = {
-    'user': 'root',
-    'password': '01140345493',
-    'host': '127.0.0.1',
+    'user': 'ua4exu9vsm0kbh8g',
+    'password': '0xIyDoCZFrS7cZQXvs9k',
+    'host': 'b4gw8havamzkcwpwo4jx-mysql.services.clever-cloud.com',
     'port': '3306',
-    'database': 'rebuild_notion'
+    'database': 'b4gw8havamzkcwpwo4jx'
 }
