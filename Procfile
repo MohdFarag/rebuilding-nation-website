@@ -1,2 +1,2 @@
-web: gunicorn --bind 0.0.0.0:443 wsgi:app
+web: gunicorn wsgi:app
 
